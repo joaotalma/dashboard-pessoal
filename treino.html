@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treinos — João V. Talmaj</title>
+<style>
+:root{--navy:#0f2040;--blue:#1d4ed8;--blue-light:#dbeafe;--green:#059669;--green-light:#d1fae5;--red:#dc2626;--red-light:#fee2e2;--orange:#d97706;--orange-light:#fef3c7;--purple:#7c3aed;--purple-light:#ede9fe;--teal:#0891b2;--teal-light:#cffafe;--border:#e5e7eb;--bg:#f0f2f6;--card:#fff;--gray:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:#1f2937;min-height:100vh}
+
+/* ── HEADER ── */
+.hdr{background:var(--navy);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.hdr-inner{display:flex;align-items:stretch;justify-content:space-between}
+.hdr-main{padding:16px 24px;flex:1}
+.hdr-main h1{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.hdr-main h1 em{color:#93c5fd;font-style:normal;font-weight:400}
+.hdr-meta{display:flex;gap:14px;margin-top:4px;font-size:11px;color:#93c5fd;flex-wrap:wrap}
+.nav{background:var(--navy);border-top:1px solid rgba(255,255,255,.1);display:flex;padding:0 8px;position:relative}
+.nav-tab{padding:11px 18px;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;display:flex;align-items:center;gap:6px;user-select:none}
+.nav-tab:hover{color:rgba(255,255,255,.85)}
+.nav-tab.active{color:#fff;border-bottom-color:#3b82f6}
+.drop-arrow{font-size:10px;margin-left:2px;transition:transform .2s}
+.nav-tab.open .drop-arrow{transform:rotate(180deg)}
+.nav-dropdown{position:absolute;top:100%;left:0;background:#1a3560;border:1px solid rgba(255,255,255,.12);border-radius:0 0 10px 10px;min-width:200px;display:none;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.nav-dropdown.open{display:block}
+.nav-sub{padding:11px 18px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s}
+.nav-sub:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-sub:last-child{border-radius:0 0 10px 10px}
+
+/* ── PAGES ── */
+.page{display:none;padding:20px 24px 70px;max-width:1100px;margin:0 auto}
+.page.active{display:block}
+
+/* ── MENU DE TREINOS ── */
+.treino-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+.treino-card{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:22px 20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.treino-card:hover{border-color:#93c5fd;box-shadow:0 4px 16px rgba(29,78,216,.12);transform:translateY(-2px)}
+.treino-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.tc-a::before{background:var(--blue)}
+.tc-b::before{background:var(--teal)}
+.tc-c::before{background:var(--red)}
+.tc-cardio::before{background:var(--green)}
+.tc-ico{font-size:32px;margin-bottom:10px}
+.tc-name{font-size:18px;font-weight:800;color:#0f2040;margin-bottom:4px}
+.tc-focus{font-size:12px;color:#6b7280;margin-bottom:12px;line-height:1.5}
+.tc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.tc-footer{display:flex;gap:10px;align-items:center;padding-top:12px;border-top:1px solid var(--border)}
+.tc-stat{font-size:11px;font-weight:700;color:#374151;display:flex;align-items:center;gap:4px}
+.tc-stat span{color:#9ca3af;font-weight:400}
+.tc-arrow{margin-left:auto;font-size:18px;color:#3b82f6;font-weight:700}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:#6b7280;margin-bottom:14px;margin-top:4px}
+.bc-link{color:#1d4ed8;cursor:pointer;font-weight:600}
+.bc-link:hover{text-decoration:underline}
+.bc-sep{color:#d1d5db}
+.bc-cur{font-weight:600;color:#374151}
+
+/* ── SECTIONS ── */
+.sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#9ca3af;margin:18px 0 9px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── CARDS ── */
+.card{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:16px 18px;margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+
+/* ── BIG NUMBERS ── */
+.bn{background:var(--card);border-radius:8px;border:1px solid var(--border);padding:13px 14px 10px;position:relative;overflow:hidden}
+.bn::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.bn.bl::before{background:var(--blue)}.bn.gr::before{background:var(--green)}.bn.or::before{background:var(--orange)}.bn.pu::before{background:var(--purple)}.bn.tl::before{background:var(--teal)}.bn.rd::before{background:var(--red)}
+.bn-ico{font-size:15px;margin-bottom:4px}
+.bn-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;margin-bottom:2px}
+.bn-val{font-size:20px;font-weight:800;line-height:1;margin-bottom:3px;letter-spacing:-.5px}
+.bn-sub{font-size:10px;color:#6b7280;line-height:1.4}
+
+/* ── EXERCISE TABLE ── */
+.ex-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ex-table{width:100%;border-collapse:collapse;min-width:500px}
+.ex-table th{text-align:left;padding:7px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;background:#f9fafb;border-bottom:1px solid var(--border)}
+.ex-table th.c{text-align:center}
+.ex-table td{padding:10px 10px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#374151;vertical-align:middle}
+.ex-table td.c{text-align:center}
+.ex-table tr:last-child td{border-bottom:none}
+.ex-table tr:hover td{background:#fafafa}
+.ex-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;margin-right:8px;flex-shrink:0;vertical-align:middle}
+.ex-name{font-weight:700;color:#111827;font-size:13px}
+.ex-orig{font-size:10px;color:#9ca3af;margin-top:1px;font-style:italic}
+.ex-desc{font-size:11px;color:#6b7280;margin-top:3px;line-height:1.5}
+.ex-sets{font-weight:800;color:#1d4ed8;font-size:14px}
+.ex-reps{font-weight:600;color:#374151;font-size:12px}
+
+/* ── MUSCLE BADGES ── */
+.muscle-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.mb{display:inline-flex;align-items:center;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+.mb-br{background:#dbeafe;color:#1e40af}
+.mb-om{background:#ede9fe;color:#5b21b6}
+.mb-co{background:#d1fae5;color:#065f46}
+.mb-cs{background:#fef3c7;color:#92400e}
+.mb-pe{background:#fee2e2;color:#991b1b}
+.mb-pn{background:#cffafe;color:#164e63}
+.mb-gl{background:#fce7f3;color:#9d174d}
+.mb-nc{background:#f3f4f6;color:#374151}
+.mb-bj{background:#0f2040;color:#93c5fd}
+
+/* ── VIDEO BUTTON ── */
+.btn-video{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn-video:hover{background:#dbeafe;border-color:#93c5fd}
+.btn-video .play-ico{font-size:11px}
+
+/* ── TIPS ── */
+.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1e40af;margin-bottom:8px;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.tip-ico{font-size:14px;flex-shrink:0;margin-top:1px}
+.tip-warn{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.tip-ok{background:#f0fdf4;border-color:#bbf7d0;color:#14532d}
+
+/* ── CARDIO ── */
+.week-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px}
+.wk{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;position:relative;overflow:hidden}
+.wk::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.wk.ph1::before{background:#3b82f6}.wk.ph2::before{background:#8b5cf6}.wk.ph3::before{background:#f59e0b}.wk.ph4::before{background:#10b981}
+.wk-num{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;margin-bottom:3px}
+.wk-run{font-size:18px;font-weight:800;color:#1f2937;line-height:1}
+.wk-unit{font-size:9px;color:#6b7280;margin-bottom:4px}
+.wk-detail{font-size:10px;color:#6b7280;line-height:1.4}
+.wk-goal{font-size:10px;font-weight:700;color:#059669;margin-top:4px}
+.sess{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:7px;border:1px solid var(--border);background:#fafafa;margin-bottom:6px}
+.sess-ico{font-size:20px;width:34px;text-align:center;flex-shrink:0}
+.sess-body{flex:1}
+.sess-title{font-size:12px;font-weight:700;color:#111827}
+.sess-detail{font-size:11px;color:#6b7280;margin-top:2px}
+.sess-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.prog-bar{height:4px;background:#e5e7eb;border-radius:2px;margin-top:5px}
+.prog-fill{height:4px;border-radius:2px}
+.tag-gr{background:var(--green-light);color:#065f46}
+.tag-bl{background:var(--blue-light);color:#1e40af}
+.tag-pu{background:var(--purple-light);color:#5b21b6}
+.tag-or{background:var(--orange-light);color:#92400e}
+
+/* ── VIDEO MODAL ── */
+.v-modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+.v-modal.open{display:flex}
+.v-box{background:#fff;border-radius:12px;width:100%;max-width:680px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.v-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--navy);color:#fff}
+.v-hdr-left{display:flex;align-items:center;gap:8px}
+.v-hdr-title{font-size:13px;font-weight:700;color:#fff}
+.v-hdr-orig{font-size:10px;color:#93c5fd;font-style:italic}
+.v-hdr-right{display:flex;align-items:center;gap:8px}
+.v-yt-btn{font-size:10px;font-weight:700;color:#93c5fd;padding:4px 10px;border:1px solid rgba(147,197,253,.3);border-radius:20px;text-decoration:none;cursor:pointer;transition:all .15s}
+.v-yt-btn:hover{background:rgba(147,197,253,.15);color:#fff}
+.v-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;transition:all .15s}
+.v-close:hover{color:#fff;background:rgba(255,255,255,.1)}
+.v-iframe-wrap{position:relative;padding-bottom:56.25%;height:0;background:#000}
+.v-iframe-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.v-note{padding:10px 16px;font-size:11px;color:#6b7280;background:#f9fafb;border-top:1px solid var(--border);text-align:center}
+
+/* ── FOOTER ── */
+.footer{text-align:center;font-size:10px;color:#9ca3af;padding:16px;border-top:1px solid var(--border);margin-top:20px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .treino-cards,.g2,.g4{grid-template-columns:1fr 1fr}
+  .week-grid{grid-template-columns:repeat(3,1fr)}
+  .page{padding:14px 12px 60px}
+}
+@media(max-width:430px){
+  .hdr-main{padding:10px 14px}
+  .treino-cards,.g4{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .week-grid{grid-template-columns:repeat(2,1fr)}
+  .nav{overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .v-box{margin:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ MODAL DE VÍDEO ═══════════════ -->
+<div id="video-modal" class="v-modal" onclick="if(event.target===this)closeVideo()">
+  <div class="v-box">
+    <div class="v-hdr">
+      <div class="v-hdr-left">
+        <div>
+          <div class="v-hdr-title" id="v-title">Exercício</div>
+          <div class="v-hdr-orig" id="v-orig"></div>
+        </div>
+      </div>
+      <div class="v-hdr-right">
+        <a id="v-yt-link" href="#" target="_blank" class="v-yt-btn">↗ Abrir no YouTube</a>
+        <button class="v-close" onclick="closeVideo()">✕</button>
+      </div>
+    </div>
+    <div class="v-iframe-wrap">
+      <iframe id="v-frame" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+    <div class="v-note">Se o vídeo não carregar, clique em "Abrir no YouTube" acima ↑</div>
+  </div>
+</div>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-main">
+      <h1>Treinos <em>— Full Body · Foco Jiu-Jitsu</em></h1>
+      <div class="hdr-meta">
+        <span>👤 <b>João V. Talmaj</b></span>
+        <span>🏋️ KB 12 kg + Peso Corporal</span>
+        <span>📍 Em casa · Tapete de yoga</span>
+        <span>🥋 Iniciante</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-tab active" id="nav-treinos" onclick="toggleMenu(event)">
+      <span>💪</span> Treinos <span class="drop-arrow">▾</span>
+    </div>
+    <div class="nav-dropdown" id="treinos-dropdown">
+      <div class="nav-sub" onclick="goTo('a')">💪 Treino A — Braços e Ombros</div>
+      <div class="nav-sub" onclick="goTo('b')">🦵 Treino B — Pernas e Quadril</div>
+      <div class="nav-sub" onclick="goTo('c')">🔥 Treino C — Full Body Circuito</div>
+      <div class="nav-sub" onclick="goTo('cardio')">🏃 Cardio — Do zero ao 5K</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PÁGINA INICIAL — SELEÇÃO DE TREINO
+════════════════════════════════════════════════════════ -->
+<div id="page-menu" class="page active">
+  <div style="margin:16px 0 12px">
+    <p style="font-size:13px;color:#6b7280;line-height:1.6">Selecione o treino do dia. Alterne entre A, B e C ao longo da semana. Cardio pode ser feito nos dias de descanso dos treinos de força.</p>
+  </div>
+
+  <div class="treino-cards">
+    <div class="treino-card tc-a" onclick="goTo('a')">
+      <div class="tc-ico">💪</div>
+      <div class="tc-name">Treino A</div>
+      <div class="tc-focus">Foco em braços, ombros e core — os músculos de grip, sprawl e postura na guarda do BJJ.</div>
+      <div class="tc-tags">
+        <span class="mb mb-br">Bíceps</span>
+        <span class="mb mb-om">Ombros</span>
+        <span class="mb mb-cs">Costas</span>
+        <span class="mb mb-co">Core</span>
+        <span class="mb mb-nc">Pescoço</span>
+      </div>
+      <div class="tc-footer">
+        <div class="tc-stat">9 <span>exercícios</span></div>
+        <div class="tc-stat">~40 <span>min</span></div>
+        <div class="tc-stat">KB + <span>corpo</span></div>
+        <div class="tc-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="treino-card tc-b" onclick="goTo('b')">
+      <div class="tc-ico">🦵</div>
+      <div class="tc-name">Treino B</div>
+      <div class="tc-focus">Foco em pernas, quadril e glúteo — a base do camarão, bridge escape e guard retention.</div>
+      <div class="tc-tags">
+        <span class="mb mb-pn">Pernas</span>
+        <span class="mb mb-gl">Glúteo</span>
+        <span class="mb mb-co">Core lateral</span>
+        <span class="mb mb-bj">Camarão</span>
+      </div>
+      <div class="tc-footer">
+        <div class="tc-stat">8 <span>exercícios</span></div>
+        <div class="tc-stat">~40 <span>min</span></div>
+        <div class="tc-stat">KB + <span>corpo</span></div>
+        <div class="tc-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="treino-card tc-c" onclick="goTo('c')">
+      <div class="tc-ico">🔥</div>
+      <div class="tc-name">Treino C</div>
+      <div class="tc-focus">Circuito full body com ritmo — simula o condicionamento de uma luta. Mais intenso, mais curto.</div>
+      <div class="tc-tags">
+        <span class="mb mb-pe">Full body</span>
+        <span class="mb mb-bj">Condicionamento</span>
+        <span class="mb mb-co">Circuito</span>
+      </div>
+      <div class="tc-footer">
+        <div class="tc-stat">9 <span>exercícios</span></div>
+        <div class="tc-stat">~35 <span>min</span></div>
+        <div class="tc-stat">2–3 <span>voltas</span></div>
+        <div class="tc-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="treino-card tc-cardio" onclick="goTo('cardio')">
+      <div class="tc-ico">🏃</div>
+      <div class="tc-name">Cardio — 5K</div>
+      <div class="tc-focus">Programa de 12 semanas para ir do zero a correr 5 km sem parar. 3 vezes por semana.</div>
+      <div class="tc-tags">
+        <span class="mb mb-pn">Corrida</span>
+        <span class="mb mb-co">Aeróbico</span>
+        <span class="mb mb-bj">Condicionamento</span>
+      </div>
+      <div class="tc-footer">
+        <div class="tc-stat">12 <span>semanas</span></div>
+        <div class="tc-stat">3× <span>por semana</span></div>
+        <div class="tc-stat">Do <span>zero</span></div>
+        <div class="tc-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Sugestão de Semana</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center">
+      <div style="padding:8px 4px;border-radius:7px;background:#dbeafe;border:1px solid #bfdbfe">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Seg</div>
+        <div style="font-size:11px;font-weight:700;color:#1e40af">Treino A</div>
+        <div style="font-size:9px;color:#6b7280">Braços</div>
+      </div>
+      <div style="padding:8px 4px;border-radius:7px;background:#f0fdf4;border:1px solid #bbf7d0">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Ter</div>
+        <div style="font-size:11px;font-weight:700;color:#065f46">Cardio</div>
+        <div style="font-size:9px;color:#6b7280">20–30 min</div>
+      </div>
+      <div style="padding:8px 4px;border-radius:7px;background:#cffafe;border:1px solid #a5f3fc">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Qua</div>
+        <div style="font-size:11px;font-weight:700;color:#164e63">Treino B</div>
+        <div style="font-size:9px;color:#6b7280">Pernas</div>
+      </div>
+      <div style="padding:8px 4px;border-radius:7px;background:#f9fafb;border:1px solid var(--border)">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Qui</div>
+        <div style="font-size:11px;font-weight:700;color:#9ca3af">Descanso</div>
+        <div style="font-size:9px;color:#6b7280">ou caminhada</div>
+      </div>
+      <div style="padding:8px 4px;border-radius:7px;background:#fee2e2;border:1px solid #fecaca">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Sex</div>
+        <div style="font-size:11px;font-weight:700;color:#991b1b">Treino C</div>
+        <div style="font-size:9px;color:#6b7280">Full body</div>
+      </div>
+      <div style="padding:8px 4px;border-radius:7px;background:#f0fdf4;border:1px solid #bbf7d0">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Sáb</div>
+        <div style="font-size:11px;font-weight:700;color:#065f46">Cardio</div>
+        <div style="font-size:9px;color:#6b7280">20–30 min</div>
+      </div>
+      <div style="padding:8px 4px;border-radius:7px;background:#f9fafb;border:1px solid var(--border)">
+        <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px">Dom</div>
+        <div style="font-size:11px;font-weight:700;color:#9ca3af">Descanso</div>
+        <div style="font-size:9px;color:#6b7280">recuperação</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TREINO A
+════════════════════════════════════════════════════════ -->
+<div id="page-a" class="page">
+  <div class="breadcrumb">
+    <span class="bc-link" onclick="goTo('menu')">💪 Treinos</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-cur">Treino A — Braços e Ombros</span>
+  </div>
+
+  <div class="g4">
+    <div class="bn bl"><div class="bn-ico">💪</div><div class="bn-lbl">Foco</div><div class="bn-val" style="font-size:14px">Braços</div><div class="bn-sub">Bíceps · Tríceps · Grip</div></div>
+    <div class="bn pu"><div class="bn-ico">🎯</div><div class="bn-lbl">Suporte</div><div class="bn-val" style="font-size:14px">Ombros</div><div class="bn-sub">Deltoides · Rotadores</div></div>
+    <div class="bn gr"><div class="bn-ico">🧘</div><div class="bn-lbl">Base</div><div class="bn-val" style="font-size:14px">Core</div><div class="bn-sub">Guarda BJJ · Postura</div></div>
+    <div class="bn or"><div class="bn-ico">⏱️</div><div class="bn-lbl">Duração</div><div class="bn-val">~40<span style="font-size:12px;font-weight:600">min</span></div><div class="bn-sub">Incl. aquecimento</div></div>
+  </div>
+
+  <div class="tip"><span class="tip-ico">🥋</span><span><b>BJJ:</b> Braços fortes = grips duradouros e guilhotinas firmes. Ombros estáveis = melhor sprawl. Core sólido = guarda que não abre.</span></div>
+
+  <div class="sec">Aquecimento (5 min)</div>
+  <div class="card" style="padding:12px 16px">
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:7px;padding:8px 12px;font-size:12px;flex:1;min-width:140px"><b>Círculos de Ombro</b><br><span style="color:#6b7280;font-size:11px">20× para frente e para trás</span></div>
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:7px;padding:8px 12px;font-size:12px;flex:1;min-width:140px"><b>Mobilidade de Pescoço</b><br><span style="color:#6b7280;font-size:11px">Lento, sem forçar — 10× cada direção</span></div>
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:7px;padding:8px 12px;font-size:12px;flex:1;min-width:140px"><b>Rotação de Pulsos</b><br><span style="color:#6b7280;font-size:11px">Abrir/fechar mãos + girar — prepara o grip</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Exercícios</div>
+  <div class="card" style="padding:0">
+    <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr>
+        <th style="width:34px;padding-left:14px">#</th>
+        <th>Exercício</th>
+        <th class="c" style="width:62px">Séries</th>
+        <th class="c" style="width:80px">Reps</th>
+        <th class="c" style="width:80px">Vídeo</th>
+      </tr></thead>
+      <tbody>
+      <tr><td style="padding-left:14px"><span class="ex-num">1</span></td><td>
+        <div class="ex-name">Flexão de Braço</div>
+        <div class="ex-orig">Push-up</div>
+        <div class="ex-desc">Joelhos no chão se necessário. Peito toca o chão, cotovelos a 45°</div>
+        <div class="muscle-row"><span class="mb mb-pe">Peito</span><span class="mb mb-om">Ombros</span><span class="mb mb-br">Tríceps</span><span class="mb mb-co">Core</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">8–12</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Flexão de Braço','IfZ0N3KeZuc')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">2</span></td><td>
+        <div class="ex-name">Halo com Kettlebell</div>
+        <div class="ex-orig">KB Halo</div>
+        <div class="ex-desc">KB na frente do rosto, girar em volta da cabeça devagar e com controle total</div>
+        <div class="muscle-row"><span class="mb mb-om">Ombros</span><span class="mb mb-co">Core</span><span class="mb mb-bj">BJJ: postura</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">8/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Halo com Kettlebell','7oPYzH80bM4')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">3</span></td><td>
+        <div class="ex-name">Remada com Kettlebell</div>
+        <div class="ex-orig">KB Bent-over Row</div>
+        <div class="ex-desc">Tronco inclinado ~45°, puxar KB até o quadril, cotovelo raspa o corpo. Alterna lados</div>
+        <div class="muscle-row"><span class="mb mb-cs">Costas</span><span class="mb mb-br">Bíceps</span><span class="mb mb-bj">BJJ: grip e puxada</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Remada com Kettlebell','Pb04JeE0X2o')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">4</span></td><td>
+        <div class="ex-name">Rosca com Kettlebell</div>
+        <div class="ex-orig">KB Curl</div>
+        <div class="ex-desc">Cotovelo fixo no corpo. Sobe em 2s, desce em 3s — o excêntrico constrói o bíceps</div>
+        <div class="muscle-row"><span class="mb mb-br">Bíceps</span><span class="mb mb-bj">BJJ: grip força</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Rosca com Kettlebell','4CZOdGbOAgM')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">5</span></td><td>
+        <div class="ex-name">Flexão com Quadril Elevado</div>
+        <div class="ex-orig">Pike Push-up</div>
+        <div class="ex-desc">Formato de V invertido, descer a cabeça entre as mãos. Ombros trabalham como no press</div>
+        <div class="muscle-row"><span class="mb mb-om">Ombros</span><span class="mb mb-br">Tríceps</span><span class="mb mb-co">Core</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">6–8</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Flexão com Quadril Elevado','eG20L9cl81w')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">6</span></td><td>
+        <div class="ex-name">Inseto Morto</div>
+        <div class="ex-orig">Dead Bug</div>
+        <div class="ex-desc">Deitado. Braço oposto ao pé se estendem juntos. Lombar NUNCA sai do chão</div>
+        <div class="muscle-row"><span class="mb mb-co">Core profundo</span><span class="mb mb-bj">BJJ: estabilidade</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">8/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Inseto Morto (Dead Bug)','rasFXFLywxM')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">7</span></td><td>
+        <div class="ex-name">Prancha</div>
+        <div class="ex-orig">Plank</div>
+        <div class="ex-desc">Antebraços no chão, corpo em linha reta. Não deixar o quadril subir nem afundar</div>
+        <div class="muscle-row"><span class="mb mb-co">Core total</span><span class="mb mb-om">Ombros</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">30s</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Prancha (Plank)','dduZjSypIS8')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">8</span></td><td>
+        <div class="ex-name">Posição Oca</div>
+        <div class="ex-orig">Hollow Body Hold</div>
+        <div class="ex-desc">Deitado, lombar pressionada no chão, braços e pernas levantados. A posição da guarda no BJJ</div>
+        <div class="muscle-row"><span class="mb mb-co">Core</span><span class="mb mb-bj">BJJ: posição guarda</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">20s</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Posição Oca (Hollow Body)','Xk-JcNj6lfY')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">9</span></td><td>
+        <div class="ex-name">Isométrica de Pescoço</div>
+        <div class="ex-orig">Neck Isometric</div>
+        <div class="ex-desc">Mão na testa, empurrar sem mover a cabeça. Repetir na nuca e nas laterais. Suave</div>
+        <div class="muscle-row"><span class="mb mb-nc">Pescoço</span><span class="mb mb-bj">BJJ: vital para segurança</span></div>
+      </td><td class="c"><span class="ex-sets">2</span></td><td class="c">30s/dir</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Fortalecimento de Pescoço','95fIpmWR_qs')"><span class="play-ico">▶</span> Ver</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="tip tip-ok"><span class="tip-ico">✅</span><span><b>Descanso:</b> 60–90s entre séries. <b>Progressão:</b> quando conseguir o máximo de reps com boa forma por 2 treinos seguidos, adicione +2 reps.</span></div>
+  <div class="tip tip-warn"><span class="tip-ico">⚠️</span><span><b>Pescoço:</b> Construir devagar. Dor real = parar. A proteção do pescoço no BJJ leva meses para construir — não force.</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TREINO B
+════════════════════════════════════════════════════════ -->
+<div id="page-b" class="page">
+  <div class="breadcrumb">
+    <span class="bc-link" onclick="goTo('menu')">💪 Treinos</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-cur">Treino B — Pernas e Quadril</span>
+  </div>
+
+  <div class="g4">
+    <div class="bn tl"><div class="bn-ico">🦵</div><div class="bn-lbl">Foco</div><div class="bn-val" style="font-size:14px">Pernas</div><div class="bn-sub">Quádriceps · Posterior · Panturrilha</div></div>
+    <div class="bn gr"><div class="bn-ico">🍑</div><div class="bn-lbl">Suporte</div><div class="bn-val" style="font-size:14px">Quadril</div><div class="bn-sub">Glúteo · Extensão · Explosão</div></div>
+    <div class="bn bl"><div class="bn-ico">🔥</div><div class="bn-lbl">Base</div><div class="bn-val" style="font-size:14px">Core</div><div class="bn-sub">Lateral · Oblíquos · Rotação</div></div>
+    <div class="bn or"><div class="bn-ico">⏱️</div><div class="bn-lbl">Duração</div><div class="bn-val">~40<span style="font-size:12px;font-weight:600">min</span></div><div class="bn-sub">Incl. aquecimento</div></div>
+  </div>
+
+  <div class="tip"><span class="tip-ico">🥋</span><span><b>BJJ:</b> Pernas e quadril = base do camarão, bridge escape, guard retention e explosão de takedown. Os movimentos mais usados no chão.</span></div>
+
+  <div class="sec">Aquecimento (5 min)</div>
+  <div class="card" style="padding:12px 16px">
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:8px 12px;font-size:12px;flex:1;min-width:140px"><b>Borboleta Sentado</b><br><span style="color:#6b7280;font-size:11px">Mobilidade quadril — 30s</span></div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:8px 12px;font-size:12px;flex:1;min-width:140px"><b>Posição 90/90</b><br><span style="color:#6b7280;font-size:11px">Rotação externa e interna — 30s cada</span></div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:8px 12px;font-size:12px;flex:1;min-width:140px"><b>Agachamento Livre</b><br><span style="color:#6b7280;font-size:11px">10 reps lentos sem peso, fundo total</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Exercícios</div>
+  <div class="card" style="padding:0">
+    <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr>
+        <th style="width:34px;padding-left:14px">#</th>
+        <th>Exercício</th>
+        <th class="c" style="width:62px">Séries</th>
+        <th class="c" style="width:80px">Reps</th>
+        <th class="c" style="width:80px">Vídeo</th>
+      </tr></thead>
+      <tbody>
+      <tr><td style="padding-left:14px"><span class="ex-num">1</span></td><td>
+        <div class="ex-name">Agachamento Goblet</div>
+        <div class="ex-orig">KB Goblet Squat</div>
+        <div class="ex-desc">KB segurado na frente do peito com duas mãos. Coxas paralelas ao chão, joelhos seguem a ponta dos pés</div>
+        <div class="muscle-row"><span class="mb mb-pn">Quádriceps</span><span class="mb mb-gl">Glúteo</span><span class="mb mb-co">Core</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Agachamento Goblet','lRYBbchqxtI')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">2</span></td><td>
+        <div class="ex-name">Terra Romeno com Kettlebell</div>
+        <div class="ex-orig">KB Romanian Deadlift</div>
+        <div class="ex-desc">Inclinar tronco com costas retas, KB desce pela frente das pernas. Sente o puxão no posterior da coxa</div>
+        <div class="muscle-row"><span class="mb mb-pn">Posterior coxa</span><span class="mb mb-gl">Glúteo</span><span class="mb mb-cs">Lombar</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Terra Romeno com Kettlebell','v69WkYRcdJA')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">3</span></td><td>
+        <div class="ex-name">Swing com Kettlebell</div>
+        <div class="ex-orig">KB Swing</div>
+        <div class="ex-desc">KB entre as pernas, snap de quadril para frente. NÃO é agachamento — é explosão de quadril</div>
+        <div class="muscle-row"><span class="mb mb-gl">Glúteo</span><span class="mb mb-cs">Costas</span><span class="mb mb-co">Core</span><span class="mb mb-bj">BJJ: explosão</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">12</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Swing com Kettlebell','n1df4ASFeZU')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">4</span></td><td>
+        <div class="ex-name">Avanço para Trás</div>
+        <div class="ex-orig">Reverse Lunge</div>
+        <div class="ex-desc">Passo para trás, joelho traseiro quase toca o chão. Empurrar com a perna da frente para voltar</div>
+        <div class="muscle-row"><span class="mb mb-pn">Pernas</span><span class="mb mb-gl">Glúteo</span><span class="mb mb-bj">BJJ: base</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">8/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Avanço para Trás','io3KJ3oN5mk')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">5</span></td><td>
+        <div class="ex-name">Elevação de Quadril</div>
+        <div class="ex-orig">Glute Bridge</div>
+        <div class="ex-desc">Deitado, pés no chão, empurrar quadril até corpo formar linha reta. Segurar 1s no topo. Essencial para bridge escape</div>
+        <div class="muscle-row"><span class="mb mb-gl">Glúteo</span><span class="mb mb-pn">Isquiotibiais</span><span class="mb mb-bj">BJJ: bridge escape</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">15</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Elevação de Quadril','1satDE63Bwc')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">6</span></td><td>
+        <div class="ex-name">Camarão / Escape de Quadril</div>
+        <div class="ex-orig">Hip Escape / Shrimp</div>
+        <div class="ex-desc">Deitado lateral, empurrar o chão com os pés e criar espaço com o quadril. O movimento de defesa mais importante do BJJ</div>
+        <div class="muscle-row"><span class="mb mb-co">Core lateral</span><span class="mb mb-pn">Quadril</span><span class="mb mb-bj">BJJ: essencial</span></div>
+      </td><td class="c"><span class="ex-sets">2</span></td><td class="c">10/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Camarão / Escape de Quadril','nPo-nTjy2YI')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">7</span></td><td>
+        <div class="ex-name">Prancha Lateral</div>
+        <div class="ex-orig">Side Plank</div>
+        <div class="ex-desc">Apoio lateral no antebraço, quadril no ar, corpo em linha reta. Resistência de guarda lateral</div>
+        <div class="muscle-row"><span class="mb mb-co">Oblíquos</span><span class="mb mb-om">Ombro</span><span class="mb mb-bj">BJJ: guard lateral</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">20s/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Prancha Lateral','pWGhRO5grqs')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">8</span></td><td>
+        <div class="ex-name">Abdominal Bicicleta</div>
+        <div class="ex-orig">Bicycle Crunch</div>
+        <div class="ex-desc">Cotovelo encontra o joelho oposto em rotação. Devagar — treina rotação de tronco usada em sweeps e kimuras</div>
+        <div class="muscle-row"><span class="mb mb-co">Oblíquos</span><span class="mb mb-bj">BJJ: rotação / sweep</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">12/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Abdominal Bicicleta','6s4cDQw1RwU')"><span class="play-ico">▶</span> Ver</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="tip tip-ok"><span class="tip-ico">✅</span><span><b>Swing:</b> O exercício mais importante desse treino. Aprenda a técnica antes de aumentar reps. O quadril faz o trabalho — não os braços.</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TREINO C
+════════════════════════════════════════════════════════ -->
+<div id="page-c" class="page">
+  <div class="breadcrumb">
+    <span class="bc-link" onclick="goTo('menu')">💪 Treinos</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-cur">Treino C — Full Body Circuito</span>
+  </div>
+
+  <div class="g4">
+    <div class="bn rd"><div class="bn-ico">🔥</div><div class="bn-lbl">Tipo</div><div class="bn-val" style="font-size:14px">Circuito</div><div class="bn-sub">Full body em sequência</div></div>
+    <div class="bn or"><div class="bn-ico">⚡</div><div class="bn-lbl">Voltas</div><div class="bn-val">2–3</div><div class="bn-sub">Com 2 min descanso entre</div></div>
+    <div class="bn gr"><div class="bn-ico">🥋</div><div class="bn-lbl">Foco BJJ</div><div class="bn-val" style="font-size:14px">Ritmo</div><div class="bn-sub">Resistência de luta</div></div>
+    <div class="bn bl"><div class="bn-ico">⏱️</div><div class="bn-lbl">Duração</div><div class="bn-val">~35<span style="font-size:12px;font-weight:600">min</span></div><div class="bn-sub">Mais intenso, mais curto</div></div>
+  </div>
+
+  <div class="tip"><span class="tip-ico">🥋</span><span><b>BJJ:</b> Simula o ritmo de uma luta — explosões seguidas de movimentos técnicos. Resistência muscular e cardiovascular ao mesmo tempo.</span></div>
+  <div class="tip" style="background:#f9fafb;border-color:var(--border);color:#374151"><span class="tip-ico">📋</span><span><b>Como usar:</b> Faça os 9 exercícios em sequência com 45–60s de descanso entre cada um. Ao terminar, descanse 2 min e repita o circuito (2–3 voltas).</span></div>
+
+  <div class="sec">Circuito</div>
+  <div class="card" style="padding:0">
+    <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr>
+        <th style="width:34px;padding-left:14px">#</th>
+        <th>Exercício</th>
+        <th class="c" style="width:62px">Séries</th>
+        <th class="c" style="width:80px">Reps</th>
+        <th class="c" style="width:80px">Vídeo</th>
+      </tr></thead>
+      <tbody>
+      <tr><td style="padding-left:14px"><span class="ex-num">1</span></td><td>
+        <div class="ex-name">Swing com Kettlebell</div>
+        <div class="ex-orig">KB Swing</div>
+        <div class="ex-desc">Ativa o corpo inteiro. Snap de quadril, não força dos braços</div>
+        <div class="muscle-row"><span class="mb mb-gl">Glúteo</span><span class="mb mb-cs">Costas</span><span class="mb mb-co">Core</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">15</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Swing com Kettlebell','n1df4ASFeZU')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">2</span></td><td>
+        <div class="ex-name">Flexão de Braço</div>
+        <div class="ex-orig">Push-up</div>
+        <div class="ex-desc">Ritmo constante. Sem travar no topo — movimento contínuo e controlado</div>
+        <div class="muscle-row"><span class="mb mb-pe">Peito</span><span class="mb mb-om">Ombros</span><span class="mb mb-br">Tríceps</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Flexão de Braço','IfZ0N3KeZuc')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">3</span></td><td>
+        <div class="ex-name">Agachamento Goblet</div>
+        <div class="ex-orig">KB Goblet Squat</div>
+        <div class="ex-desc">Profundidade total. Pausa de 1s no fundo de cada rep</div>
+        <div class="muscle-row"><span class="mb mb-pn">Pernas</span><span class="mb mb-gl">Glúteo</span><span class="mb mb-co">Core</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Agachamento Goblet','lRYBbchqxtI')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">4</span></td><td>
+        <div class="ex-name">Remada com Kettlebell</div>
+        <div class="ex-orig">KB Row</div>
+        <div class="ex-desc">Puxada forte, cotovelo alto. As costas puxam — não o braço</div>
+        <div class="muscle-row"><span class="mb mb-cs">Costas</span><span class="mb mb-br">Bíceps</span><span class="mb mb-bj">BJJ: pull</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">10/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Remada com Kettlebell','Pb04JeE0X2o')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">5</span></td><td>
+        <div class="ex-name">Escalador</div>
+        <div class="ex-orig">Mountain Climber</div>
+        <div class="ex-desc">Em posição de push-up, joelhos alternam até o peito. Ritmo constante, core sempre ativo</div>
+        <div class="muscle-row"><span class="mb mb-co">Core</span><span class="mb mb-pn">Quadril</span><span class="mb mb-om">Ombros</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">20</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Escalador (Mountain Climber)','7W4JEfEKuC4')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">6</span></td><td>
+        <div class="ex-name">Caminhada do Urso</div>
+        <div class="ex-orig">Bear Crawl</div>
+        <div class="ex-desc">4 apoios, joelhos 5 cm do chão. Andar para frente e para trás no tapete. Base e postura do BJJ</div>
+        <div class="muscle-row"><span class="mb mb-om">Ombros</span><span class="mb mb-co">Core</span><span class="mb mb-pn">Quadril</span><span class="mb mb-bj">BJJ: base</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">20m</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Caminhada do Urso','iuR17xUXLeA')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">7</span></td><td>
+        <div class="ex-name">Encaixe com Kettlebell</div>
+        <div class="ex-orig">KB Clean</div>
+        <div class="ex-desc">Swing mas o KB sobe e "encaixa" na mão. Aprenda devagar — o pulso encaixa, não bate</div>
+        <div class="muscle-row"><span class="mb mb-gl">Quadril</span><span class="mb mb-om">Ombros</span><span class="mb mb-bj">BJJ: explosão total</span></div>
+      </td><td class="c"><span class="ex-sets">2</span></td><td class="c">5/lado</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Encaixe com Kettlebell (KB Clean)','xQb9Tc3iQpI')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">8</span></td><td>
+        <div class="ex-name">Burpee Modificado</div>
+        <div class="ex-orig">Modified Burpee</div>
+        <div class="ex-desc">De pé → push-up → de pé, sem saltar. Ganhe resistência antes de adicionar o salto</div>
+        <div class="muscle-row"><span class="mb mb-pe">Full body</span><span class="mb mb-bj">BJJ: condicionamento</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">5</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Burpee Modificado','nBi4jFkRUmM')"><span class="play-ico">▶</span> Ver</span></td></tr>
+
+      <tr><td style="padding-left:14px"><span class="ex-num">9</span></td><td>
+        <div class="ex-name">Prancha</div>
+        <div class="ex-orig">Plank</div>
+        <div class="ex-desc">Finalização. Respiração nasal controlada — acalma o ritmo cardíaco</div>
+        <div class="muscle-row"><span class="mb mb-co">Core total</span><span class="mb mb-om">Ombros</span></div>
+      </td><td class="c"><span class="ex-sets">3</span></td><td class="c">30s</td>
+      <td class="c"><span class="btn-video" onclick="openVideo('Prancha','dduZjSypIS8')"><span class="play-ico">▶</span> Ver</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="tip tip-warn"><span class="tip-ico">⚠️</span><span><b>KB Clean:</b> Aprenda o movimento sem peso primeiro. O pulso encaixa suavemente — se machucar o pulso, a técnica está errada.</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CARDIO 5K
+════════════════════════════════════════════════════════ -->
+<div id="page-cardio" class="page">
+  <div class="breadcrumb">
+    <span class="bc-link" onclick="goTo('menu')">💪 Treinos</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-cur">Cardio — Do zero ao 5K</span>
+  </div>
+
+  <div class="g4">
+    <div class="bn gr"><div class="bn-ico">🏃</div><div class="bn-lbl">Objetivo</div><div class="bn-val" style="font-size:16px">5 km</div><div class="bn-sub">Correr sem parar</div></div>
+    <div class="bn bl"><div class="bn-ico">📅</div><div class="bn-lbl">Duração</div><div class="bn-val">12<span style="font-size:13px;font-weight:600"> sem</span></div><div class="bn-sub">Progressão gradual</div></div>
+    <div class="bn or"><div class="bn-ico">🗓️</div><div class="bn-lbl">Frequência</div><div class="bn-val" style="font-size:15px">3×/sem</div><div class="bn-sub">1 dia off entre cada</div></div>
+    <div class="bn pu"><div class="bn-ico">💙</div><div class="bn-lbl">Início</div><div class="bn-val" style="font-size:15px">Zero</div><div class="bn-sub">Nunca correu antes</div></div>
+  </div>
+
+  <div class="tip"><span class="tip-ico">🥋</span><span><b>BJJ:</b> Quem não cansa, não comete erro. Capacidade aeróbica = mais rounds com técnica. 5km em 12 semanas é a base de condicionamento.</span></div>
+
+  <div class="sec">Visão geral — 12 semanas</div>
+  <div class="week-grid">
+    <div class="wk ph1"><div class="wk-num">Sem 1–2</div><div class="wk-run">1</div><div class="wk-unit">min corrida</div><div class="wk-detail">+ 2 min caminhada</div><div class="wk-detail">× 8 rondas</div></div>
+    <div class="wk ph1"><div class="wk-num">Sem 3–4</div><div class="wk-run">2</div><div class="wk-unit">min corrida</div><div class="wk-detail">+ 1 min caminhada</div><div class="wk-detail">× 6 rondas</div></div>
+    <div class="wk ph2"><div class="wk-num">Sem 5–6</div><div class="wk-run">5</div><div class="wk-unit">min corrida</div><div class="wk-detail">+ 2 min caminhada</div><div class="wk-detail">× 4 rondas</div></div>
+    <div class="wk ph2"><div class="wk-num">Sem 7–8</div><div class="wk-run">10</div><div class="wk-unit">min corrida</div><div class="wk-detail">+ 2 min caminhada</div><div class="wk-detail">× 3 rondas</div></div>
+    <div class="wk ph3"><div class="wk-num">Sem 9–10</div><div class="wk-run">20</div><div class="wk-unit">min contínuo</div><div class="wk-detail">sem caminhar</div><div class="wk-goal">~3 km</div></div>
+    <div class="wk ph3"><div class="wk-num">Sem 11</div><div class="wk-run">25</div><div class="wk-unit">min contínuo</div><div class="wk-detail">ritmo confortável</div><div class="wk-goal">~3,5 km</div></div>
+    <div class="wk ph4" style="grid-column:span 2"><div class="wk-num">Semana 12 🏁</div><div class="wk-run">30</div><div class="wk-unit">min contínuo</div><div class="wk-detail">seu ritmo, sem parar</div><div class="wk-goal">✓ 5 km</div></div>
+  </div>
+
+  <div class="sec">Detalhes por Fase</div>
+  <div class="g2">
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#1d4ed8;margin-bottom:8px">🔵 Fase 1 — Introdução (Sem 1–4)</div>
+      <p style="font-size:12px;color:#374151;line-height:1.6;margin-bottom:10px">Alternar corrida e caminhada. Corpo aprende o impacto e constrói base aeróbica. <b>Se não consegue falar frases, está rápido demais.</b></p>
+      <div class="sess"><div class="sess-ico">🗓️</div><div class="sess-body"><div class="sess-title">Semana 1–2</div><div class="sess-detail">8× (correr 1min + caminhar 2min) = ~24 min</div><div class="prog-bar"><div class="prog-fill" style="width:17%;background:#3b82f6"></div></div></div><span class="sess-badge tag-bl">~2 km</span></div>
+      <div class="sess"><div class="sess-ico">🗓️</div><div class="sess-body"><div class="sess-title">Semana 3–4</div><div class="sess-detail">6× (correr 2min + caminhar 1min) = ~18 min</div><div class="prog-bar"><div class="prog-fill" style="width:33%;background:#3b82f6"></div></div></div><span class="sess-badge tag-bl">~2,5 km</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:8px">🟣 Fase 2 — Blocos Maiores (Sem 5–8)</div>
+      <p style="font-size:12px;color:#374151;line-height:1.6;margin-bottom:10px">Corridas mais longas, descanso menor. Mantenha ritmo conversacional — deve conseguir falar durante a corrida.</p>
+      <div class="sess"><div class="sess-ico">🗓️</div><div class="sess-body"><div class="sess-title">Semana 5–6</div><div class="sess-detail">4× (correr 5min + caminhar 2min) = ~28 min</div><div class="prog-bar"><div class="prog-fill" style="width:50%;background:#7c3aed"></div></div></div><span class="sess-badge tag-pu">~3 km</span></div>
+      <div class="sess"><div class="sess-ico">🗓️</div><div class="sess-body"><div class="sess-title">Semana 7–8</div><div class="sess-detail">3× (correr 10min + caminhar 2min) = ~36 min</div><div class="prog-bar"><div class="prog-fill" style="width:67%;background:#7c3aed"></div></div></div><span class="sess-badge tag-pu">~4 km</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:8px">🟡 Fase 3 — Corrida Contínua (Sem 9–11)</div>
+      <p style="font-size:12px;color:#374151;line-height:1.6;margin-bottom:10px">Sem pausas para caminhar. Reduza o ritmo se necessário, mas não pare. Essa fase é mental tanto quanto física.</p>
+      <div class="sess"><div class="sess-ico">🗓️</div><div class="sess-body"><div class="sess-title">Semana 9–10</div><div class="sess-detail">Correr 20 min contínuo</div><div class="prog-bar"><div class="prog-fill" style="width:80%;background:#f59e0b"></div></div></div><span class="sess-badge tag-or">~3 km</span></div>
+      <div class="sess"><div class="sess-ico">🗓️</div><div class="sess-body"><div class="sess-title">Semana 11</div><div class="sess-detail">Correr 25 min contínuo</div><div class="prog-bar"><div class="prog-fill" style="width:90%;background:#f59e0b"></div></div></div><span class="sess-badge tag-or">~3,5 km</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:#059669;margin-bottom:8px">🟢 Fase 4 — Os 5K (Sem 12)</div>
+      <p style="font-size:12px;color:#374151;line-height:1.6;margin-bottom:10px">A chegada. Nessa semana você completa os 5km pela primeira vez. Não importa o tempo — terminar é o objetivo.</p>
+      <div class="sess"><div class="sess-ico">🏁</div><div class="sess-body"><div class="sess-title">Semana 12 — Os 5K!</div><div class="sess-detail">Correr 30 min contínuo ≈ 5 km no seu ritmo</div><div class="prog-bar"><div class="prog-fill" style="width:100%;background:#059669"></div></div></div><span class="sess-badge tag-gr">✓ Chegou</span></div>
+      <div class="tip tip-ok" style="margin-top:10px;margin-bottom:0"><span class="tip-ico">🎯</span><span>Um dos 3 treinos semanais é o teste dos 5km. Os outros dois são corridas de manutenção (20–25 min).</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Regras de Ouro</div>
+  <div class="g2">
+    <div class="tip tip-ok" style="margin-bottom:0"><span class="tip-ico">✅</span><span><b>Ritmo conversacional:</b> Se não consegue falar, está rápido demais. Vá mais devagar — chegar é o objetivo.</span></div>
+    <div class="tip tip-ok" style="margin-bottom:0"><span class="tip-ico">✅</span><span><b>Repita a semana se precisar:</b> Não avance se ainda está difícil. Não tem prazo — tem objetivo.</span></div>
+    <div class="tip tip-warn" style="margin-bottom:0"><span class="tip-ico">⚠️</span><span><b>Dor ≠ cansaço:</b> Cansaço muscular é normal. Dor articular (joelho, tornozelo) = parar e descansar 2–3 dias.</span></div>
+    <div class="tip tip-warn" style="margin-bottom:0"><span class="tip-ico">⚠️</span><span><b>Dias off:</b> Nunca dois dias seguidos. Seg / Qua / Sex ou Ter / Qui / Sáb são os esquemas mais comuns.</span></div>
+  </div>
+</div>
+
+<div class="footer">Treinos — Sistema Pessoal João V. Talmaj · Para integrar no dashboard, adicionar como página no nav principal</div>
+
+<script>
+var currentPage = 'menu';
+
+function goTo(name) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var el = document.getElementById('page-' + name);
+  if (el) { el.classList.add('active'); currentPage = name; }
+  document.getElementById('treinos-dropdown').classList.remove('open');
+  document.getElementById('nav-treinos').classList.remove('open');
+  document.getElementById('nav-treinos').classList.toggle('active', true);
+  window.scrollTo(0, 0);
+}
+
+function toggleMenu(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('treinos-dropdown');
+  var tab = document.getElementById('nav-treinos');
+  var isOpen = dd.classList.contains('open');
+  dd.classList.toggle('open', !isOpen);
+  tab.classList.toggle('open', !isOpen);
+}
+
+document.addEventListener('click', function() {
+  document.getElementById('treinos-dropdown').classList.remove('open');
+  document.getElementById('nav-treinos').classList.remove('open');
+});
+
+function openVideo(title, videoId) {
+  document.getElementById('v-title').textContent = title;
+  document.getElementById('v-frame').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1';
+  document.getElementById('v-yt-link').href = 'https://www.youtube.com/watch?v=' + videoId;
+  document.getElementById('video-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideo() {
+  document.getElementById('video-modal').classList.remove('open');
+  document.getElementById('v-frame').src = '';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeVideo();
+});
+</script>
+</body>
+</html>
