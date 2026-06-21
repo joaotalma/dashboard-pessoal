@@ -207,12 +207,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,san
   .h-grid{grid-template-columns:1fr 1fr;gap:6px}
 
   /* Big numbers menores */
-  .bn{padding:10px 11px 9px}
+  .bn{padding:10px 12px 9px;overflow:visible;min-height:0;height:auto}
+  .bn::before{border-radius:8px 8px 0 0}
   .bn-ico{font-size:14px;margin-bottom:4px}
-  .bn-lbl{font-size:9px;margin-bottom:3px}
-  .bn-val{font-size:17px;margin-bottom:3px}
-  .bn-sub{font-size:9px}
-  .bn-tag{font-size:9px;padding:2px 6px;margin-top:4px}
+  .bn-lbl{font-size:9px;margin-bottom:3px;white-space:normal;word-break:break-word}
+  .bn-val{font-size:15px;margin-bottom:3px;white-space:normal;word-break:break-word;overflow-wrap:break-word}
+  .bn-sub{font-size:9px;white-space:normal;overflow-wrap:break-word}
+  .bn-tag{font-size:9px;padding:2px 6px;margin-top:4px;white-space:normal}
 
   /* KPIs */
   .kpi{padding:10px 11px}
