@@ -519,9 +519,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,san
 <!-- ══════════════════════════════════════════════════════════════
      PÁGINA 3 — SAÚDE
 ══════════════════════════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════════════════════════
+     PÁGINA 3 — SAÚDE
+══════════════════════════════════════════════════════════════ -->
 <div id="page-saude" class="page">
 
-  <!-- Big numbers saúde -->
   <div class="sec">Métricas Principais — InBody 720 · 20/06/2026</div>
   <div class="bn-grid" style="grid-template-columns:repeat(4,1fr)">
     <div class="bn tl">
@@ -587,10 +590,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,san
   <div class="sec">Composição Corporal Detalhada</div>
   <div class="g23">
     <div class="card">
-      <div class="card-hdr">
-        <span class="card-title">Distribuição do Peso (122,1 kg)</span>
-      </div>
-      <!-- Body composition bar -->
+      <div class="card-hdr"><span class="card-title">Distribuição do Peso (122,1 kg)</span></div>
       <div class="bc-bar" style="height:36px;margin:6px 0 14px">
         <div class="bc-seg" style="width:46%;background:#3b82f6">Água 56,1 kg</div>
         <div class="bc-seg" style="width:12.4%;background:#22c55e;font-size:9px">Prot 15,1</div>
@@ -598,21 +598,390 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,san
         <div class="bc-seg" style="width:37.3%;background:#f87171">Gord 45,5 kg</div>
       </div>
       <div class="h-grid" style="grid-template-columns:1fr 1fr;margin-bottom:0">
-        <div class="h-stat">
-          <div class="h-val" style="color:#3b82f6">56,1 kg</div>
-          <div class="h-lbl">Água Corporal</div>
-          <div class="h-ref">45,9% do total</div>
-        </div>
-        <div class="h-stat">
-          <div class="h-val" style="color:#22c55e">15,1 kg</div>
-          <div class="h-lbl">Proteína</div>
-          <div class="h-ref">12,4% do total</div>
-        </div>
-        <div class="h-stat">
-          <div class="h-val" style="color:#84cc16">5,4 kg</div>
-          <div class="h-lbl">Minerais</div>
-          <div class="h-ref">4,4% do total</div>
-        </div>
-        <div class="h-stat">
-          <div class="h-val" style="color:#dc2626">45,5 kg</div>
-          <div class="h-lbl">Gordu
+        <div class="h-stat"><div class="h-val" style="color:#3b82f6">56,1 kg</div><div class="h-lbl">Água Corporal</div><div class="h-ref">45,9% do total</div></div>
+        <div class="h-stat"><div class="h-val" style="color:#22c55e">15,1 kg</div><div class="h-lbl">Proteína</div><div class="h-ref">12,4% do total</div></div>
+        <div class="h-stat"><div class="h-val" style="color:#84cc16">5,4 kg</div><div class="h-lbl">Minerais</div><div class="h-ref">4,4% do total</div></div>
+        <div class="h-stat"><div class="h-val" style="color:#dc2626">45,5 kg</div><div class="h-lbl">Gordura Total</div><div class="h-ref">37,3% do total</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Exames Laboratoriais — Jun/2026</span><span class="bdg bdg-rd">Atenção</span></div>
+      <table class="tbl">
+        <thead><tr><th>Exame</th><th class="r">Resultado</th><th class="r">Ref.</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="fw">Insulina</td><td class="r c-rd">21,1 µUI/mL</td><td class="r c-gy">&lt; 13,1</td><td><span class="bdg bdg-rd">↑ Alto</span></td></tr>
+          <tr><td class="fw">Hemoglobina Glicada</td><td class="r c-or">5,8%</td><td class="r c-gy">&lt; 5,7%</td><td><span class="bdg bdg-or">Limítrofe</span></td></tr>
+          <tr><td class="fw">Glicemia Jejum</td><td class="r c-or">103 mg/dL</td><td class="r c-gy">70–99</td><td><span class="bdg bdg-or">↑ Limítrofe</span></td></tr>
+          <tr><td class="fw">Colesterol Total</td><td class="r">188 mg/dL</td><td class="r c-gy">&lt; 200</td><td><span class="bdg bdg-gr">✓ OK</span></td></tr>
+          <tr><td class="fw">HDL</td><td class="r c-rd">38 mg/dL</td><td class="r c-gy">&gt; 40</td><td><span class="bdg bdg-rd">↓ Baixo</span></td></tr>
+          <tr><td class="fw">LDL</td><td class="r">118 mg/dL</td><td class="r c-gy">&lt; 130</td><td><span class="bdg bdg-gr">✓ OK</span></td></tr>
+          <tr><td class="fw">Triglicerídeos</td><td class="r c-rd">222 mg/dL</td><td class="r c-gy">&lt; 150</td><td><span class="bdg bdg-rd">↑ Alto</span></td></tr>
+          <tr><td class="fw">TSH</td><td class="r">2,1 µUI/mL</td><td class="r c-gy">0,4–4,0</td><td><span class="bdg bdg-gr">✓ OK</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec">Zepp — Dados dos Últimos 3 Dias</div>
+  <div class="g3">
+    <div class="card" style="grid-column:span 2">
+      <div class="card-hdr"><span class="card-title">Sono — Profundo · Leve · REM (min)</span><span class="bdg bdg-gy">3 noites</span></div>
+      <div class="chart-wrap" style="height:220px"><canvas id="zSleep"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Passos Diários</span><span class="bdg bdg-bl">4 dias</span></div>
+      <div class="chart-wrap" style="height:220px"><canvas id="zSteps"></canvas></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">FC Média por Hora — 21/06 (Dom)</span><span class="bdg bdg-rd">bpm</span></div>
+      <div class="chart-wrap" style="height:200px"><canvas id="zHR"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Medicações em Uso</span><span class="bdg bdg-gy">Atual</span></div>
+      <div class="med"><div><div class="med-name">Mounjaro 5mg</div><div class="med-freq">1× semana · emagrecer/insulina</div></div><span class="bdg bdg-or">Semanal</span></div>
+      <div class="med"><div><div class="med-name">Creatina 5g</div><div class="med-freq">1× dia · manutenção muscular</div></div><span class="bdg bdg-bl">Diário</span></div>
+      <div class="med"><div><div class="med-name">Whey Protein</div><div class="med-freq">1× dia · meta proteica</div></div><span class="bdg bdg-bl">Diário</span></div>
+      <div class="med"><div><div class="med-name">Ômega 3</div><div class="med-freq">1× dia · triglicerídeos</div></div><span class="bdg bdg-gr">Diário</span></div>
+      <div class="med"><div><div class="med-name">Psyllium</div><div class="med-freq">1× dia · fibra / saciedade</div></div><span class="bdg bdg-gr">Diário</span></div>
+    </div>
+  </div>
+
+</div><!-- /page-saude -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     PÁGINA 4 — CARDÁPIO
+══════════════════════════════════════════════════════════════ -->
+<div id="page-cardapio" class="page">
+
+  <div class="sec">Cardápio Nutricional — Plano do Nutricionista</div>
+  <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi or"><div class="kpi-lbl">Total Kcal</div><div class="kpi-val">1.538</div><div class="kpi-sub">Meta diária<br>déficit calórico</div></div>
+    <div class="kpi gr"><div class="kpi-lbl">Proteínas</div><div class="kpi-val">147,2 g</div><div class="kpi-sub">38,3% das kcal<br>preserva massa</div></div>
+    <div class="kpi bl"><div class="kpi-lbl">Carboidratos</div><div class="kpi-val">174 g</div><div class="kpi-sub">45,3% das kcal<br>energia e saciedade</div></div>
+    <div class="kpi pu"><div class="kpi-lbl">Gorduras</div><div class="kpi-val">37,7 g</div><div class="kpi-sub">22,1% das kcal<br>hormônios e células</div></div>
+    <div class="kpi nv"><div class="kpi-lbl">Refeições</div><div class="kpi-val">5</div><div class="kpi-sub">Do desjejum<br>à janta</div></div>
+  </div>
+
+  <div class="g2" style="margin-top:4px">
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Kcal por Refeição</span></div>
+      <div class="chart-wrap" style="height:220px"><canvas id="cKcal"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Macros por Refeição (g)</span></div>
+      <div class="chart-wrap" style="height:220px"><canvas id="cMacros"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sec">Detalhamento das Refeições</div>
+  <div class="g2">
+
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">☀️ Desjejum · 06:30</span><span class="bdg bdg-gy">15 kcal</span></div>
+      <table class="tbl">
+        <thead><tr><th>Alimento</th><th class="r">Kcal</th><th class="r">Prot</th><th class="r">Carb</th><th class="r">Gord</th></tr></thead>
+        <tbody>
+          <tr><td>Shot Dry (1 dose)</td><td class="r">15</td><td class="r">0</td><td class="r">3</td><td class="r">0</td></tr>
+          <tr style="background:#f9fafb;font-weight:700"><td>Total</td><td class="r c-or">15</td><td class="r c-gr">0g</td><td class="r c-bl">3g</td><td class="r c-gy">0g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">☕ Café da Manhã · 07:00</span><span class="bdg bdg-or">331 kcal</span></div>
+      <table class="tbl">
+        <thead><tr><th>Alimento</th><th class="r">Kcal</th><th class="r">Prot</th><th class="r">Carb</th><th class="r">Gord</th></tr></thead>
+        <tbody>
+          <tr><td>Café</td><td class="r">5</td><td class="r">0,3g</td><td class="r">0,7g</td><td class="r">0g</td></tr>
+          <tr><td>Ovo cozido (3 un)</td><td class="r">210</td><td class="r">18g</td><td class="r">1,2g</td><td class="r">14,7g</td></tr>
+          <tr><td>Banana nanica</td><td class="r">59</td><td class="r">0,8g</td><td class="r">14,5g</td><td class="r">0,2g</td></tr>
+          <tr><td>Farelo de aveia (20g)</td><td class="r">57</td><td class="r">4,1g</td><td class="r">10,5g</td><td class="r">1,2g</td></tr>
+          <tr><td>Creatina (5g)</td><td class="r">0</td><td class="r">0g</td><td class="r">0g</td><td class="r">0g</td></tr>
+          <tr style="background:#f9fafb;font-weight:700"><td>Total</td><td class="r c-or">331</td><td class="r c-gr">23,2g</td><td class="r c-bl">26,9g</td><td class="r c-gy">17,1g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">🍽️ Almoço · 11:00</span><span class="bdg bdg-bl">498 kcal</span></div>
+      <table class="tbl">
+        <thead><tr><th>Alimento</th><th class="r">Kcal</th><th class="r">Prot</th><th class="r">Carb</th><th class="r">Gord</th></tr></thead>
+        <tbody>
+          <tr><td>Salada de folhas</td><td class="r">10</td><td class="r">0,8g</td><td class="r">1,5g</td><td class="r">0,1g</td></tr>
+          <tr><td>Brócolis cozido (100g)</td><td class="r">35</td><td class="r">2,4g</td><td class="r">6,5g</td><td class="r">0,4g</td></tr>
+          <tr><td>Frango grelhado (150g)</td><td class="r">248</td><td class="r">46,5g</td><td class="r">0g</td><td class="r">5,6g</td></tr>
+          <tr><td>Arroz branco (100g)</td><td class="r">130</td><td class="r">2,7g</td><td class="r">28,1g</td><td class="r">0,3g</td></tr>
+          <tr><td>Abacaxi (100g)</td><td class="r">75</td><td class="r">1g</td><td class="r">20,8g</td><td class="r">0,5g</td></tr>
+          <tr style="background:#f9fafb;font-weight:700"><td>Total</td><td class="r c-or">498</td><td class="r c-gr">53,4g</td><td class="r c-bl">56,9g</td><td class="r c-gy">6,9g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">🍇 Lanche da Tarde · 15:00</span><span class="bdg bdg-or">306 kcal</span></div>
+      <table class="tbl">
+        <thead><tr><th>Alimento</th><th class="r">Kcal</th><th class="r">Prot</th><th class="r">Carb</th><th class="r">Gord</th></tr></thead>
+        <tbody>
+          <tr><td>Alface</td><td class="r">5</td><td class="r">0,5g</td><td class="r">0,8g</td><td class="r">0,1g</td></tr>
+          <tr><td>Tomate</td><td class="r">15</td><td class="r">0,7g</td><td class="r">3,2g</td><td class="r">0,2g</td></tr>
+          <tr><td>Frango desfiado (75g)</td><td class="r">124</td><td class="r">23,2g</td><td class="r">0g</td><td class="r">2,8g</td></tr>
+          <tr><td>Pão integral (2 fatias)</td><td class="r">120</td><td class="r">6g</td><td class="r">21,6g</td><td class="r">2g</td></tr>
+          <tr><td>Creme de ricota light</td><td class="r">42</td><td class="r">1,3g</td><td class="r">0,7g</td><td class="r">3g</td></tr>
+          <tr style="background:#f9fafb;font-weight:700"><td>Total</td><td class="r c-or">306</td><td class="r c-gr">31,7g</td><td class="r c-bl">26,3g</td><td class="r c-gy">8,1g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-hdr"><span class="card-title">🌙 Janta · 18:00</span><span class="bdg bdg-pu">388 kcal</span></div>
+    <table class="tbl">
+      <thead><tr><th>Alimento</th><th class="r">Kcal</th><th class="r">Prot</th><th class="r">Carb</th><th class="r">Gord</th></tr></thead>
+      <tbody>
+        <tr><td>Uva Rubi/Itália (150g)</td><td class="r">106</td><td class="r">0,9g</td><td class="r">27,3g</td><td class="r">0,2g</td></tr>
+        <tr><td>Farelo de aveia (20g)</td><td class="r">57</td><td class="r">4,1g</td><td class="r">10,5g</td><td class="r">1,2g</td></tr>
+        <tr><td>Iogurte desnatado (170g)</td><td class="r">85</td><td class="r">8,5g</td><td class="r">11,9g</td><td class="r">0g</td></tr>
+        <tr><td>Whey protein (30g)</td><td class="r">120</td><td class="r">24g</td><td class="r">3g</td><td class="r">2g</td></tr>
+        <tr><td>Psyllium (5g)</td><td class="r">20</td><td class="r">0g</td><td class="r">5g</td><td class="r">0g</td></tr>
+        <tr><td>Ômega 3</td><td class="r">0</td><td class="r">0g</td><td class="r">0g</td><td class="r">2,2g</td></tr>
+        <tr><td>Água</td><td class="r">0</td><td class="r">0g</td><td class="r">0g</td><td class="r">0g</td></tr>
+        <tr style="background:#f9fafb;font-weight:700"><td>Total</td><td class="r c-or">388</td><td class="r c-gr">38,9g</td><td class="r c-bl">60,9g</td><td class="r c-gy">5,6g</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /page-cardapio -->
+
+<div class="footer">Dashboard Executivo · João V. Talmaj · D0 21/06/2026 · Dados estáticos — atualizar a cada avaliação</div>
+
+<script>
+/* ─── NAVEGAÇÃO ─────────────────────────────────────────── */
+function goTo(name, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='resumo')   setTimeout(buildResumoCharts,   50);
+  if(name==='financas') setTimeout(buildFinCharts,       50);
+  if(name==='saude')    setTimeout(buildZeppCharts,      50);
+  if(name==='cardapio') setTimeout(buildCardapioCharts,  50);
+}
+
+/* ─── PRÓXIMA REFEIÇÃO ────────────────────────────────── */
+const REFEICOES = [
+  { nome:'Desjejum',        ico:'☀️',  hora:6,  min:30, kcal:15,  prot:0,    carb:3,    fat:0,
+    itens:['Shot Dry (1 dose)'] },
+  { nome:'Café da Manhã',   ico:'☕',  hora:7,  min:0,  kcal:331, prot:23.2, carb:26.9, fat:17.1,
+    itens:['Café','Ovo cozido (3 un)','Banana nanica','Farelo de aveia','Creatina'] },
+  { nome:'Almoço',          ico:'🍽️', hora:11, min:0,  kcal:498, prot:53.4, carb:56.9, fat:6.9,
+    itens:['Salada de folhas','Brócolis cozido','Frango grelhado (150g)','Arroz branco (100g)','Abacaxi'] },
+  { nome:'Lanche da Tarde', ico:'🍇',  hora:15, min:0,  kcal:306, prot:31.7, carb:26.3, fat:8.1,
+    itens:['Alface','Tomate','Frango desfiado (75g)','Pão integral (2 fatias)','Creme de ricota light'] },
+  { nome:'Janta',           ico:'🌙',  hora:18, min:0,  kcal:388, prot:38.9, carb:60.9, fat:5.6,
+    itens:['Uva Rubi/Itália','Farelo de aveia','Iogurte desnatado','Whey protein','Psyllium','Ômega 3'] }
+];
+
+function renderProximaRefeicao(){
+  const el = document.getElementById('proximaRefeicao');
+  if(!el) return;
+  const now = new Date();
+  const minAtual = now.getHours()*60 + now.getMinutes();
+  const horaStr = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  let prox = null, anterior = null;
+  for(let i=0; i<REFEICOES.length; i++){
+    const r = REFEICOES[i];
+    const mRef = r.hora*60 + r.min;
+    if(mRef > minAtual){ prox = r; break; }
+    anterior = r;
+  }
+  if(!prox){ prox = REFEICOES[0]; }
+  const horRef = prox.hora.toString().padStart(2,'0')+':'+prox.min.toString().padStart(2,'0');
+  const minFalta = (prox.hora*60+prox.min) - minAtual;
+  const faltaStr = minFalta <= 0 ? 'agora' : (minFalta >= 60 ? Math.floor(minFalta/60)+'h '+( minFalta%60 ? (minFalta%60)+'min' : '') : minFalta+'min');
+  el.innerHTML = `
+    <div style="background:#0f2040;border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      <div style="font-size:28px">${prox.ico}</div>
+      <div style="flex:1;min-width:180px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;margin-bottom:2px">Próxima Refeição — agora são ${horaStr}</div>
+        <div style="font-size:17px;font-weight:800;color:#fff">${prox.nome}</div>
+        <div style="font-size:12px;color:#93c5fd;margin-top:2px">${horRef} · falta ${faltaStr}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#fbbf24">${prox.kcal}</div><div style="font-size:9px;color:#94a3b8;text-transform:uppercase">kcal</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#34d399">${prox.prot}g</div><div style="font-size:9px;color:#94a3b8;text-transform:uppercase">prot</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#60a5fa">${prox.carb}g</div><div style="font-size:9px;color:#94a3b8;text-transform:uppercase">carb</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#a78bfa">${prox.fat}g</div><div style="font-size:9px;color:#94a3b8;text-transform:uppercase">gord</div></div>
+      </div>
+      <div style="font-size:11px;color:#cbd5e1;border-left:1px solid rgba(255,255,255,.15);padding-left:14px;min-width:140px">${prox.itens.slice(0,4).join('<br>')}</div>
+    </div>`;
+}
+
+/* ─── RESUMO CHARTS ─────────────────────────────────────── */
+function buildResumoCharts(){
+  if(!document.getElementById('rPat')) return;
+  const el1 = document.getElementById('rPat');
+  const el2 = document.getElementById('rCompar');
+  if(el1._built && el2._built) return;
+  if(!el1._built){ el1._built=true;
+    new Chart(el1, { type:'doughnut', data:{
+      labels:['Água','Proteína','Minerais','Gordura'],
+      datasets:[{data:[45.9,12.4,4.4,37.3],backgroundColor:['#3b82f6','#22c55e','#a3e635','#f87171'],borderWidth:2,borderColor:'#fff'}]
+    }, options:{plugins:{legend:{position:'right',labels:{font:{size:11}}}},cutout:'60%'}});
+  }
+  if(!el2._built){ el2._built=true;
+    new Chart(el2, { type:'bar', data:{
+      labels:['Ativos','Passivos'],
+      datasets:[{data:[2844,130114],backgroundColor:['#059669','#dc2626'],borderRadius:4,borderSkipped:false}]
+    }, options:{plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')}}}}});
+  }
+}
+
+/* ─── FIN CHARTS ─────────────────────────────────────────── */
+function buildFinCharts(){
+  const ids = ['fCartoes','fDivida','fPat','fCompar'];
+  if(ids.some(id=>{ const e=document.getElementById(id); return !e||e._built;})) {
+    const e0=document.getElementById('fCartoes'); if(e0&&e0._built) return;
+  }
+
+  // Faturas João (projeção 12 meses D0)
+  const meses = ['Jun/26','Jul/26','Ago/26','Set/26','Out/26','Nov/26','Dez/26','Jan/27','Fev/27','Mar/27','Abr/27','Mai/27'];
+  const joao  = [4521,3840,3280,2690,2190,1750,1310,870,580,290,140,0];
+  const leticia=[2573,1574,600,400,0,0,0,0,0,0,0,0];
+
+  const eC=document.getElementById('fCartoes');
+  if(eC&&!eC._built){ eC._built=true;
+    new Chart(eC,{type:'bar',data:{labels:meses,datasets:[
+      {label:'João',data:joao,backgroundColor:'#3b82f6',borderRadius:3},
+      {label:'Letícia',data:leticia,backgroundColor:'#f59e0b',borderRadius:3}
+    ]},options:{plugins:{legend:{position:'top'}},scales:{x:{stacked:false},y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')}}}}});
+  }
+
+  // Dívida amortização 24 meses
+  const eD=document.getElementById('fDivida');
+  if(eD&&!eD._built){ eD._built=true;
+    let sc=81300,cc=48814.09; const ts=[],consL=[],carrL=[],totL=[];
+    for(let m=0;m<24;m++){
+      const jC=sc*0.0214, pC=2409.26, amC=pC-jC; sc=Math.max(0,sc-amC);
+      const jCar=cc*0.0138, pCar=1424.58, amCar=pCar-jCar; cc=Math.max(0,cc-amCar);
+      ts.push('M'+(m+1)); consL.push(Math.round(sc)); carrL.push(Math.round(cc)); totL.push(Math.round(sc+cc));
+    }
+    new Chart(eD,{type:'line',data:{labels:ts,datasets:[
+      {label:'Total',data:totL,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.1)',fill:true,tension:.3},
+      {label:'Consig.',data:consL,borderColor:'#7c3aed',borderDash:[4,2],tension:.3},
+      {label:'Carro',data:carrL,borderColor:'#f59e0b',borderDash:[4,2],tension:.3}
+    ]},options:{plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:v=>'R$'+v.toLocaleString('pt-BR')}}}}});
+  }
+
+  // Patrimônio donut
+  const eP=document.getElementById('fPat');
+  if(eP&&!eP._built){ eP._built=true;
+    new Chart(eP,{type:'doughnut',data:{
+      labels:['PGBL','FII','Ação'],
+      datasets:[{data:[1312,180,41],backgroundColor:['#7c3aed','#2563eb','#059669'],borderWidth:2,borderColor:'#fff'}]
+    },options:{plugins:{legend:{position:'bottom',labels:{font:{size:10}}}},cutout:'55%'}});
+  }
+
+  // Ativos vs Passivos comparativo
+  const eCo=document.getElementById('fCompar');
+  if(eCo&&!eCo._built){ eCo._built=true;
+    new Chart(eCo,{type:'bar',data:{
+      labels:['Ativos totais','Passivos totais'],
+      datasets:[{data:[2844,130114],backgroundColor:['#059669','#dc2626'],borderRadius:5,borderSkipped:false}]
+    },options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}}}});
+  }
+
+  // Tabela amortização 12 meses
+  let s2=81300,c2=48814.09;
+  const tb=document.getElementById('tblAmort'); if(tb) tb.innerHTML='';
+  for(let m=0;m<12;m++){
+    const jC2=s2*0.0214,pC2=2409.26,amC2=pC2-jC2; s2=Math.max(0,s2-amC2);
+    const jCar2=c2*0.0138,pCar2=1424.58,amCar2=pCar2-jCar2; c2=Math.max(0,c2-amCar2);
+    const d=new Date(2026,5+m,1);
+    const label=d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}).replace('. ','/'). replace('.','');
+    if(tb) tb.innerHTML+=`<tr><td>${label}</td><td class="r">R$${Math.round(s2).toLocaleString('pt-BR')}</td><td class="r">R$${Math.round(c2).toLocaleString('pt-BR')}</td><td class="r fw">R$${Math.round(s2+c2).toLocaleString('pt-BR')}</td></tr>`;
+  }
+
+  // Tabela faturas
+  const tf=document.getElementById('tblFaturas'); if(tf) tf.innerHTML='';
+  meses.forEach((m,i)=>{
+    if(joao[i]||leticia[i]){
+      if(tf) tf.innerHTML+=`<tr><td>${m}</td><td class="r">${joao[i]?'R$'+joao[i].toLocaleString('pt-BR'):'-'}</td><td class="r">${leticia[i]?'R$'+leticia[i].toLocaleString('pt-BR'):'-'}</td><td class="r fw">R$${(joao[i]+leticia[i]).toLocaleString('pt-BR')}</td></tr>`;
+    }
+  });
+}
+
+/* ─── ZEPP CHARTS ────────────────────────────────────────── */
+const ZEPP = {
+  sleep:{
+    labels:['19/06 (Sex)','20/06 (Sáb)','21/06 (Dom)'],
+    deep:[74,108,122], light:[173,247,215], rem:[57,121,113]
+  },
+  hr21:{
+    labels:['00h','01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h'],
+    vals:[63.7,54.7,56.4,56.6,60.4,61.2,61.8,62.9,64.9,86.1,87.9,76.1,82.9,93.4,81.8,81.2,78.3,79.0]
+  },
+  steps:{labels:['18/06','19/06','20/06','21/06'], vals:[1333,2182,2078,2436]}
+};
+
+function buildZeppCharts(){
+  const eS=document.getElementById('zSleep');
+  const eH=document.getElementById('zHR');
+  const eSt=document.getElementById('zSteps');
+  if(!eS||!eH||!eSt) return;
+  if(eS._built) return;
+  eS._built=eH._built=eSt._built=true;
+
+  new Chart(eS,{type:'bar',data:{labels:ZEPP.sleep.labels,datasets:[
+    {label:'Profundo (min)',data:ZEPP.sleep.deep,backgroundColor:'#1d4ed8',borderRadius:3},
+    {label:'Leve (min)',data:ZEPP.sleep.light,backgroundColor:'#93c5fd',borderRadius:3},
+    {label:'REM (min)',data:ZEPP.sleep.rem,backgroundColor:'#7c3aed',borderRadius:3}
+  ]},options:{plugins:{legend:{position:'top'}},scales:{x:{stacked:true},y:{stacked:true}}}});
+
+  new Chart(eH,{type:'line',data:{labels:ZEPP.hr21.labels,datasets:[{
+    label:'FC média (bpm)',data:ZEPP.hr21.vals,
+    borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.1)',fill:true,tension:.3,pointRadius:3
+  }]},options:{plugins:{legend:{display:false}},scales:{y:{min:40,title:{display:true,text:'bpm'}}}}});
+
+  new Chart(eSt,{type:'bar',data:{labels:ZEPP.steps.labels,datasets:[{
+    label:'Passos',data:ZEPP.steps.vals,
+    backgroundColor:ZEPP.steps.vals.map(v=>v>=5000?'#059669':v>=3000?'#f59e0b':'#94a3b8'),borderRadius:4
+  }]},options:{plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'passos'}}}}});
+}
+
+/* ─── CARDÁPIO CHARTS ─────────────────────────────────────── */
+function buildCardapioCharts(){
+  const eK=document.getElementById('cKcal');
+  const eM=document.getElementById('cMacros');
+  if(!eK||!eM) return;
+  if(eK._built) return;
+  eK._built=eM._built=true;
+
+  const refs=['Desjejum','Café da Manhã','Almoço','Lanche','Janta'];
+  const kcals=[15,331,498,306,388];
+  const prots=[0,23.2,53.4,31.7,38.9];
+  const carbs=[3,26.9,56.9,26.3,60.9];
+  const fats=[0,17.1,6.9,8.1,5.6];
+  const cores=['#94a3b8','#f59e0b','#2563eb','#0891b2','#a78bfa'];
+
+  new Chart(eK,{type:'bar',data:{labels:refs,datasets:[{
+    label:'Kcal',data:kcals,backgroundColor:cores,borderRadius:5,borderSkipped:false
+  }]},options:{plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'kcal'}}}}});
+
+  new Chart(eM,{type:'bar',data:{labels:refs,datasets:[
+    {label:'Proteína (g)',data:prots,backgroundColor:'#22c55e',borderRadius:3},
+    {label:'Carboidrato (g)',data:carbs,backgroundColor:'#60a5fa',borderRadius:3},
+    {label:'Gordura (g)',data:fats,backgroundColor:'#a78bfa',borderRadius:3}
+  ]},options:{plugins:{legend:{position:'top'}},scales:{x:{stacked:false},y:{title:{display:true,text:'gramas'}}}}});
+}
+
+/* ─── INIT ─────────────────────────────────────────────────── */
+renderProximaRefeicao();
+setInterval(renderProximaRefeicao, 60000);
+buildResumoCharts();
+</script>
+</body>
+</html>
