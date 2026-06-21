@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard Executivo — João V. Talmaj · D0 21/06/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+:root{color-scheme:light;--blue:#1d4ed8;--blue-light:#dbeafe;--green:#059669;--green-light:#d1fae5;--red:#dc2626;--red-light:#fee2e2;--orange:#d97706;--orange-light:#fef3c7;--navy:#0f2040;--gray:#6b7280;--border:#e5e7eb;--bg:#f0f2f6;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:#111827;font-size:14px;min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--navy);color:#fff}
+.hdr-inner{display:flex;align-items:stretch;justify-content:space-between}
+.hdr-main{padding:18px 28px;flex:1}
+.hdr-main h1{font-size:18px;font-weight:700;letter-spacing:-.3px;color:#fff}
+.hdr-main h1 em{color:#93c5fd;font-style:normal;font-weight:400}
+.hdr-meta{margin-top:5px;font-size:11px;color:#94a3b8;display:flex;gap:16px;flex-wrap:wrap}
+.hdr-meta b{color:#cbd5e1}
+.hdr-badge{background:rgba(251,191,36,.1);border-left:1px solid rgba(251,191,36,.25);padding:18px 24px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;min-width:190px}
+.hdr-badge .label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:#fbbf24}
+.hdr-badge .val{font-size:11px;color:#e2e8f0;line-height:1.5}
+
+/* NAV TABS */
+.nav{background:#0a1a30;border-top:1px solid rgba(255,255,255,.07);display:flex;padding:0 20px}
+.nav-tab{padding:12px 20px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;letter-spacing:.2px;transition:color .15s,border-color .15s;display:flex;align-items:center;gap:7px}
+.nav-tab:hover{color:#94a3b8}
+.nav-tab.active{color:#fff;border-bottom-color:#3b82f6}
+.nav-tab .nav-ico{font-size:14px}
+
+/* LAYOUT */
+.page{display:none;padding:20px 24px 48px;max-width:1400px;margin:0 auto}
+.page.active{display:block}
+
+/* SEC TITLE */
+.sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:#9ca3af;margin:22px 0 10px;display:flex;align-items:center;gap:10px}
+.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* BIG NUMBERS (resumo) */
+.bn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.bn{background:var(--card);border-radius:8px;border:1px solid var(--border);padding:14px 15px 11px;position:relative;overflow:hidden}
+.bn::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.bn.bl::before{background:var(--blue)}
+.bn.gr::before{background:var(--green)}
+.bn.rd::before{background:var(--red)}
+.bn.or::before{background:var(--orange)}
+.bn.nv::before{background:var(--navy)}
+.bn.pu::before{background:#7c3aed}
+.bn.tl::before{background:#0891b2}
+.bn-ico{font-size:16px;margin-bottom:7px}
+.bn-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#9ca3af;margin-bottom:5px}
+.bn-val{font-size:21px;font-weight:800;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.bn.bl .bn-val{color:var(--blue)}
+.bn.gr .bn-val{color:var(--green)}
+.bn.rd .bn-val{color:var(--red)}
+.bn.or .bn-val{color:var(--orange)}
+.bn.nv .bn-val{color:var(--navy)}
+.bn.pu .bn-val{color:#7c3aed}
+.bn.tl .bn-val{color:#0891b2}
+.bn-sub{font-size:10px;color:#6b7280;line-height:1.4}
+.bn-tag{display:inline-flex;align-items:center;margin-top:6px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600}
+.tag-rd{background:#fee2e2;color:#991b1b}
+.tag-or{background:#fef3c7;color:#92400e}
+.tag-gr{background:#d1fae5;color:#065f46}
+.tag-bl{background:#dbeafe;color:#1e40af}
+.tag-gy{background:#f3f4f6;color:#374151}
+
+/* KPI GRID */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:4px}
+.kpi{background:var(--card);border-radius:8px;border:1px solid var(--border);padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border)}
+.kpi.bl::before{background:var(--blue)}
+.kpi.gr::before{background:var(--green)}
+.kpi.rd::before{background:var(--red)}
+.kpi.or::before{background:var(--orange)}
+.kpi.nv::before{background:var(--navy)}
+.kpi.pu::before{background:#7c3aed}
+.kpi-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:7px}
+.kpi-val{font-size:19px;font-weight:700;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.kpi.bl .kpi-val{color:var(--blue)}
+.kpi.gr .kpi-val{color:var(--green)}
+.kpi.rd .kpi-val{color:var(--red)}
+.kpi.or .kpi-val{color:var(--orange)}
+.kpi.nv .kpi-val{color:var(--navy)}
+.kpi.pu .kpi-val{color:#7c3aed}
+.kpi-sub{font-size:10px;color:#9ca3af;line-height:1.5}
+
+/* CARDS */
+.card{background:var(--card);border-radius:8px;border:1px solid var(--border);padding:16px}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#6b7280}
+.chart-wrap{position:relative}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.g42{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:12px}
+.g23{display:grid;grid-template-columns:2fr 3fr;gap:12px;margin-bottom:12px}
+
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;white-space:nowrap}
+.bdg-bl{background:var(--blue-light);color:#1e40af}
+.bdg-gr{background:var(--green-light);color:#065f46}
+.bdg-rd{background:var(--red-light);color:#991b1b}
+.bdg-or{background:var(--orange-light);color:#92400e}
+.bdg-gy{background:#f3f4f6;color:#374151}
+.bdg-pu{background:#ede9fe;color:#5b21b6}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:6px 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;background:#f9fafb;border-bottom:1px solid var(--border)}
+.tbl td{padding:7px 8px;border-bottom:1px solid #f3f4f6;color:#374151;vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#fafafa}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.fw{font-weight:600}
+.c-rd{color:var(--red);font-weight:600}
+.c-gr{color:var(--green);font-weight:600}
+.c-gy{color:#9ca3af}
+
+/* PROGRESS BARS */
+.pb{margin-bottom:10px}
+.pb-hdr{display:flex;justify-content:space-between;margin-bottom:3px;font-size:11px;color:#4b5563}
+.pb-hdr b{color:#1f2937;font-variant-numeric:tabular-nums}
+.pb-bg{background:#f3f4f6;border-radius:4px;height:6px}
+.pb-fill{height:6px;border-radius:4px}
+
+/* HEALTH */
+.h-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.h-stat{background:#f8fafc;border-radius:7px;padding:12px;border:1px solid var(--border);text-align:center}
+.h-val{font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
+.h-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af}
+.h-ref{font-size:10px;color:#6b7280;margin-top:2px}
+
+/* INBODY BODY COMP BAR */
+.bc-bar{display:flex;height:28px;border-radius:5px;overflow:hidden;margin:10px 0}
+.bc-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;min-width:30px}
+
+/* MEDS */
+.med{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:6px;background:#f8fafc;border:1px solid var(--border);margin-bottom:5px;font-size:12px}
+.med:last-child{margin-bottom:0}
+.med-name{font-weight:500;color:#1f2937}
+.med-freq{font-size:10px;color:#6b7280}
+
+/* ALERT ROW */
+.alert-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.alert-item{flex:1;min-width:200px;background:var(--card);border-radius:8px;border:1px solid var(--border);padding:14px 16px;border-left-width:3px}
+.alert-item.rd{border-left-color:var(--red)}
+.alert-item.or{border-left-color:var(--orange)}
+.alert-item.gr{border-left-color:var(--green)}
+.alert-item.bl{border-left-color:var(--blue)}
+.alert-title{font-size:11px;font-weight:700;margin-bottom:3px}
+.alert-item.rd .alert-title{color:var(--red)}
+.alert-item.or .alert-title{color:var(--orange)}
+.alert-item.gr .alert-title{color:var(--green)}
+.alert-item.bl .alert-title{color:var(--blue)}
+.alert-body{font-size:11px;color:#4b5563;line-height:1.4}
+
+/* NOTA */
+.nota{font-size:10px;color:#9ca3af;margin-top:8px;font-style:italic;line-height:1.5}
+.div-line{height:1px;background:var(--border);margin:10px 0 12px}
+
+/* FOOTER */
+.footer{text-align:center;padding:14px 24px;font-size:10px;color:#9ca3af;border-top:1px solid var(--border);background:var(--card);margin-top:4px}
+
+@media(max-width:720px){
+  .bn-grid,.kpi-row{grid-template-columns:1fr 1fr}
+  .g2,.g3,.g42,.g23{grid-template-columns:1fr}
+  .h-grid{grid-template-columns:1fr 1fr}
+  .hdr-badge{display:none}
+  .page{padding:12px 10px 32px}
+  .nav-tab{padding:10px 12px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-main">
+      <h1>Dashboard Executivo <em>— Gestão Financeira &amp; Pessoal</em></h1>
+      <div class="hdr-meta">
+        <span>👤 <b>João V. Talmaj</b></span>
+        <span>📅 Snapshot D0: <b>21 de junho de 2026</b></span>
+        <span>🗂️ Fonte: <b>Sistema de Captura — CSVs</b></span>
+      </div>
+    </div>
+    <div class="hdr-badge">
+      <div class="label">📸 Snapshot estático</div>
+      <div class="val">Dados fixos na geração.<br>Não atualiza automaticamente.</div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-tab active" onclick="goTo('resumo',this)"><span class="nav-ico">🏠</span>Resumo Geral</div>
+    <div class="nav-tab" onclick="goTo('financas',this)"><span class="nav-ico">💰</span>Finanças</div>
+    <div class="nav-tab" onclick="goTo('saude',this)"><span class="nav-ico">🏥</span>Saúde</div>
+    <div class="nav-tab" onclick="goTo('cardapio',this)"><span class="nav-ico">🥗</span>Cardápio</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PÁGINA 1 — RESUMO GERAL
+══════════════════════════════════════════════════════════════ -->
+<div id="page-resumo" class="page active">
+
+  <!-- PRÓXIMA REFEIÇÃO (dinâmico) -->
+  <div id="proximaRefeicao" style="margin-bottom:14px"></div>
+
+  <div class="sec">Finanças — Visão Rápida</div>
+  <div class="bn-grid">
+    <div class="bn rd">
+      <div class="bn-ico">🏦</div>
+      <div class="bn-lbl">Dívida Total</div>
+      <div class="bn-val">R$ 130k</div>
+      <div class="bn-sub">Consignado R$81.300<br>Financiamento carro R$48.814</div>
+      <span class="bn-tag tag-rd">↑ Passivo principal</span>
+    </div>
+    <div class="bn or">
+      <div class="bn-ico">💳</div>
+      <div class="bn-lbl">Faturas a Vencer</div>
+      <div class="bn-val">R$ 24.767</div>
+      <div class="bn-sub">João R$19.621 · Letícia R$5.147<br>Dados D0 — parcelas já compradas</div>
+      <span class="bn-tag tag-or">Venc. jun/26</span>
+    </div>
+    <div class="bn bl">
+      <div class="bn-ico">📅</div>
+      <div class="bn-lbl">Parcelas Mensais</div>
+      <div class="bn-val">R$ 3.834</div>
+      <div class="bn-sub">Consignado R$2.409/mês<br>Carro R$1.425/mês</div>
+      <span class="bn-tag tag-bl">Comprometimento fixo</span>
+    </div>
+    <div class="bn nv">
+      <div class="bn-ico">⚖️</div>
+      <div class="bn-lbl">Patrimônio Líquido</div>
+      <div class="bn-val" style="font-size:22px">−R$ 127.270</div>
+      <div class="bn-sub">Ativos R$2.844 − Dívidas R$130.114<br>Início da jornada</div>
+      <span class="bn-tag tag-gy">Em construção</span>
+    </div>
+  </div>
+
+  <div class="sec">Saúde — Visão Rápida</div>
+  <div class="bn-grid">
+    <div class="bn tl">
+      <div class="bn-ico">⚖️</div>
+      <div class="bn-lbl">Peso Atual</div>
+      <div class="bn-val">122,1 kg</div>
+      <div class="bn-sub">InBody · 20/06/2026<br>Mounjaro 5mg em uso</div>
+      <span class="bn-tag tag-or">Meta: 100 kg</span>
+    </div>
+    <div class="bn rd">
+      <div class="bn-ico">🔥</div>
+      <div class="bn-lbl">Gordura Corporal</div>
+      <div class="bn-val">37,3%</div>
+      <div class="bn-sub">Ref. masculino: 10–20%<br>Massa gordura: 45,5 kg</div>
+      <span class="bn-tag tag-rd">↑ Acima do ideal</span>
+    </div>
+    <div class="bn gr">
+      <div class="bn-ico">💪</div>
+      <div class="bn-lbl">Massa Muscular Esq.</div>
+      <div class="bn-val">43,7 kg</div>
+      <div class="bn-sub">Ref: 28–34 kg · Acima da ref.<br>Massa magra total: 76,6 kg</div>
+      <span class="bn-tag tag-gr">✓ Acima da ref.</span>
+    </div>
+    <div class="bn or">
+      <div class="bn-ico">🔥</div>
+      <div class="bn-lbl">Gordura Visceral</div>
+      <div class="bn-val">Nível 20</div>
+      <div class="bn-sub">Ref. segura: 1–9<br>Alto risco cardiometabólico</div>
+      <span class="bn-tag tag-rd">↑ Alto risco</span>
+    </div>
+  </div>
+
+  <div class="sec">Alertas &amp; Prioridades</div>
+  <div class="alert-row">
+    <div class="alert-item rd">
+      <div class="alert-title">🔴 Gordura visceral nível 20</div>
+      <div class="alert-body">Risco cardiometabólico alto. Mounjaro + exercício aeróbico são o plano.</div>
+    </div>
+    <div class="alert-item rd">
+      <div class="alert-title">🔴 Insulina 21,1 µUI/mL</div>
+      <div class="alert-body">Acima de 13,1 — resistência insulínica. Monitorar com endocrinologista.</div>
+    </div>
+    <div class="alert-item or">
+      <div class="alert-title">🟠 Patrimônio Líquido negativo</div>
+      <div class="alert-body">−R$127.270. Dívidas dominam o balanço. Foco: quitação antecipada e aportes regulares.</div>
+    </div>
+    <div class="alert-item or">
+      <div class="alert-title">🟠 Faturas Jun/26 elevadas</div>
+      <div class="alert-body">R$24.767 concentrado em Jun. Redução natural a partir de Jul/26 com vencimento de parcelas.</div>
+    </div>
+    <div class="alert-item gr">
+      <div class="alert-title">🟢 Massa muscular acima da ref.</div>
+      <div class="alert-body">43,7 kg vs. ref. 28–34 kg. Base sólida para recomposição corporal durante o emagrecimento.</div>
+    </div>
+    <div class="alert-item bl">
+      <div class="alert-title">🔵 PGBL crescendo</div>
+      <div class="alert-body">R$1.311,70 acumulados + R$183/mês via folha. Composto com benefício fiscal do IR.</div>
+    </div>
+  </div>
+
+  <!-- Mini charts lado a lado -->
+  <div class="sec">Panorama Rápido</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Composição corporal — D0</span>
+        <span class="bdg bdg-gy">122,1 kg total</span>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="rPat"></canvas></div>
+      <div class="nota">% aproximada do peso total. Gordura representa 37,3% do corpo.</div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Ativos vs. Passivos — D0</span>
+        <span class="bdg bdg-rd">Balanço patrimonial</span>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="rCompar"></canvas></div>
+      <div class="nota">Passivos 46× maiores que ativos. Jornada de reequilíbrio em curso.</div>
+    </div>
+  </div>
+
+</div><!-- /page-resumo -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     PÁGINA 2 — FINANÇAS
+══════════════════════════════════════════════════════════════ -->
+<div id="page-financas" class="page">
+
+  <div class="sec">KPIs Financeiros</div>
+  <div class="kpi-row">
+    <div class="kpi gr">
+      <div class="kpi-lbl">Patrimônio (custo)</div>
+      <div class="kpi-val">R$ 1.532</div>
+      <div class="kpi-sub">FII R$180 · Ação R$41<br>Preço de aquisição</div>
+    </div>
+    <div class="kpi pu">
+      <div class="kpi-lbl">PGBL acumulado</div>
+      <div class="kpi-val">R$ 1.312</div>
+      <div class="kpi-sub">João + Itaú Match<br>+R$ 183/mês via folha</div>
+    </div>
+    <div class="kpi rd">
+      <div class="kpi-lbl">Dívida total</div>
+      <div class="kpi-val">R$ 130.114</div>
+      <div class="kpi-sub">Consig. R$81.300<br>Carro R$48.814</div>
+    </div>
+    <div class="kpi or">
+      <div class="kpi-lbl">Faturas a vencer</div>
+      <div class="kpi-val">R$ 24.767</div>
+      <div class="kpi-sub">João R$19.621<br>Letícia R$5.147</div>
+    </div>
+    <div class="kpi bl">
+      <div class="kpi-lbl">Parcelas mensais</div>
+      <div class="kpi-val">R$ 3.834</div>
+      <div class="kpi-sub">Consig. R$2.409<br>Carro R$1.425</div>
+    </div>
+    <div class="kpi nv">
+      <div class="kpi-lbl">Patrimônio líquido</div>
+      <div class="kpi-val" style="font-size:15px">− R$ 127.270</div>
+      <div class="kpi-sub">(Ativos+PGBL) − Dívidas<br>Início da jornada</div>
+    </div>
+  </div>
+
+  <div class="sec">Gráficos</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Faturas por Mês — João vs Letícia</span>
+        <span class="bdg bdg-gy">12 meses · projeção</span>
+      </div>
+      <div class="chart-wrap" style="height:230px"><canvas id="fCartoes"></canvas></div>
+      <div class="nota">* Cartão João vence dia 28 · Letícia dia 27. Dados D0: parcelas já compradas, sem novos gastos futuros.</div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Amortização do Saldo Devedor — 24 meses</span>
+        <span class="bdg bdg-rd">Price table</span>
+      </div>
+      <div class="chart-wrap" style="height:230px"><canvas id="fDivida"></canvas></div>
+      <div class="nota">* Tabela Price. Consignado: 2,14%/mês · Carro: 1,38%/mês.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Composição do Patrimônio (custo de aquisição)</span>
+        <span class="bdg bdg-gr">Ativo</span>
+      </div>
+      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+        <div class="chart-wrap" style="height:200px;width:190px;flex-shrink:0"><canvas id="fPat"></canvas></div>
+        <div style="flex:1;min-width:140px">
+          <div class="pb">
+            <div class="pb-hdr"><span>PGBL</span><b>R$ 1.312 (85,7%)</b></div>
+            <div class="pb-bg"><div class="pb-fill" style="width:85.7%;background:#7c3aed"></div></div>
+          </div>
+          <div class="pb">
+            <div class="pb-hdr"><span>FII</span><b>R$ 180 (11,7%)</b></div>
+            <div class="pb-bg"><div class="pb-fill" style="width:11.7%;background:#2563eb"></div></div>
+          </div>
+          <div class="pb">
+            <div class="pb-hdr"><span>Ação</span><b>R$ 41 (2,6%)</b></div>
+            <div class="pb-bg"><div class="pb-fill" style="width:2.6%;background:#059669"></div></div>
+          </div>
+          <div style="margin-top:14px;padding:10px;background:#f0fdf4;border-radius:6px;border:1px solid #bbf7d0">
+            <div style="font-size:11px;color:#065f46"><b>Total ativos:</b> R$ 2.844</div>
+            <div style="font-size:10px;color:#16a34a;margin-top:2px">FII + Ação + PGBL (custo)</div>
+          </div>
+          <div style="margin-top:8px;padding:10px;background:#fef2f2;border-radius:6px;border:1px solid #fecaca">
+            <div style="font-size:11px;color:#991b1b"><b>Total passivos:</b> R$ 130.114</div>
+            <div style="font-size:10px;color:#dc2626;margin-top:2px">Consignado + Financiamento</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Ativos vs. Passivos — Comparativo atual</span>
+        <span class="bdg bdg-gy">D0 · 21/06/2026</span>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="fCompar"></canvas></div>
+      <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+        <div style="flex:1;background:#f0fdf4;border-radius:6px;padding:8px 10px;border:1px solid #bbf7d0;min-width:100px">
+          <div style="font-size:10px;color:#065f46;font-weight:700;text-transform:uppercase;margin-bottom:2px">Total Ativo</div>
+          <div style="font-size:14px;font-weight:700;color:#059669">R$ 2.844</div>
+        </div>
+        <div style="flex:1;background:#fef2f2;border-radius:6px;padding:8px 10px;border:1px solid #fecaca;min-width:100px">
+          <div style="font-size:10px;color:#991b1b;font-weight:700;text-transform:uppercase;margin-bottom:2px">Total Passivo</div>
+          <div style="font-size:14px;font-weight:700;color:#dc2626">R$ 130.114</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Detalhamento por Área</div>
+  <div class="g3">
+
+    <!-- PATRIMÔNIO -->
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Patrimônio Investido</span>
+        <span class="bdg bdg-gr">R$ 2.844</span>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Ativo</th><th>Classe</th><th class="r">Cotas</th><th class="r">Custo</th><th class="r">PM</th></tr></thead>
+        <tbody>
+          <tr><td class="fw">MXRF11</td><td><span class="bdg bdg-bl">FII</span></td><td class="r">8</td><td class="r c-gr">R$ 77,52</td><td class="r c-gy">R$ 9,69</td></tr>
+          <tr><td class="fw">BTLG11</td><td><span class="bdg bdg-bl">FII</span></td><td class="r">1</td><td class="r c-gr">R$ 102,37</td><td class="r c-gy">R$ 102,37</td></tr>
+          <tr><td class="fw">ITUB4</td><td><span class="bdg bdg-gr">Ação</span></td><td class="r">1</td><td class="r c-gr">R$ 40,56</td><td class="r c-gy">R$ 40,56</td></tr>
+          <tr style="background:#f5f3ff"><td class="fw">PGBL</td><td><span class="bdg bdg-pu">PGBL</span></td><td class="r c-gy">—</td><td class="r" style="color:#7c3aed;font-weight:700">R$ 1.311,70</td><td class="r c-gy">folha</td></tr>
+          <tr style="background:#f0fdf4;font-weight:700"><td colspan="3">Total</td><td class="r c-gr">R$ 1.532,15</td><td class="r c-gy">+PGBL</td></tr>
+        </tbody>
+      </table>
+      <div class="nota">PM = preço médio. PGBL: aportes de folha — não debitam do caixa.</div>
+    </div>
+
+    <!-- DÍVIDAS -->
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Dívidas — Saldo Devedor</span>
+        <span class="bdg bdg-rd">R$ 130.114</span>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Dívida</th><th class="r">Saldo D0</th><th class="r">Parcela</th><th class="r">N rest.</th><th class="r">Taxa/mês</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="fw">Consignado CLT</div><div class="c-gy" style="font-size:10px">1ª parcela 27/Jul/26</div></td>
+            <td class="r c-rd">R$ 81.300,00</td><td class="r">R$ 2.409,26</td><td class="r">72</td><td class="r">2,14%</td>
+          </tr>
+          <tr>
+            <td><div class="fw">Financiamento Carro</div><div class="c-gy" style="font-size:10px">1 de 48 pagas</div></td>
+            <td class="r c-rd">R$ 48.814,09</td><td class="r">R$ 1.424,58</td><td class="r">47</td><td class="r">1,38%</td>
+          </tr>
+          <tr style="background:#fef2f2;font-weight:700">
+            <td>Total</td><td class="r c-rd">R$ 130.114,09</td><td class="r">R$ 3.833,84</td><td class="r c-gy">—</td><td class="r c-gy">—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="div-line"></div>
+      <div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Amortização em 12 meses</div>
+      <table class="tbl">
+        <thead><tr><th>Mês</th><th class="r">Consig.</th><th class="r">Carro</th><th class="r">Total</th></tr></thead>
+        <tbody id="tblAmort"></tbody>
+      </table>
+      <div class="nota">* Tabela Price. Consignado estimado — confirmar saldo real com banco.</div>
+    </div>
+
+    <!-- CARTÕES -->
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Cartões — Faturas a Vencer</span>
+        <span class="bdg bdg-or">R$ 24.767</span>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Vencimento</th><th class="r">João</th><th class="r">Letícia</th><th class="r">Total</th></tr></thead>
+        <tbody id="tblFaturas"></tbody>
+      </table>
+      <div class="div-line"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:#eff6ff;border-radius:6px;padding:10px;border:1px solid #bfdbfe">
+          <div style="font-size:10px;color:#1e40af;font-weight:700;text-transform:uppercase;margin-bottom:3px">Total João</div>
+          <div style="font-size:16px;font-weight:700;color:#1d4ed8">R$ 19.621</div>
+          <div style="font-size:10px;color:#3b82f6">12 faturas · vence dia 28</div>
+        </div>
+        <div style="background:#fff7ed;border-radius:6px;padding:10px;border:1px solid #fed7aa">
+          <div style="font-size:10px;color:#92400e;font-weight:700;text-transform:uppercase;margin-bottom:3px">Total Letícia</div>
+          <div style="font-size:16px;font-weight:700;color:#d97706">R$ 5.147</div>
+          <div style="font-size:10px;color:#f59e0b">Nubank + Itaú · vence dia 27</div>
+        </div>
+      </div>
+      <div class="nota">* Dados D0: parcelas já compradas. A partir de Jul/26: compra a compra.</div>
+    </div>
+
+  </div>
+</div><!-- /page-financas -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     PÁGINA 3 — SAÚDE
+══════════════════════════════════════════════════════════════ -->
+<div id="page-saude" class="page">
+
+  <!-- Big numbers saúde -->
+  <div class="sec">Métricas Principais — InBody 720 · 20/06/2026</div>
+  <div class="bn-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="bn tl">
+      <div class="bn-ico">⚖️</div>
+      <div class="bn-lbl">Peso</div>
+      <div class="bn-val">122,1 kg</div>
+      <div class="bn-sub">Avaliação InBody · 20/06/2026<br>Próxima: 08/08/2026</div>
+      <span class="bn-tag tag-or">Meta: 100 kg</span>
+    </div>
+    <div class="bn rd">
+      <div class="bn-ico">📊</div>
+      <div class="bn-lbl">IMC</div>
+      <div class="bn-val">36,5</div>
+      <div class="bn-sub">Obesidade grau II<br>Ref. normal: 18,5–24,9</div>
+      <span class="bn-tag tag-rd">↑ Obesidade II</span>
+    </div>
+    <div class="bn rd">
+      <div class="bn-ico">🔥</div>
+      <div class="bn-lbl">% Gordura Corporal</div>
+      <div class="bn-val">37,3%</div>
+      <div class="bn-sub">45,5 kg de gordura<br>Ref. masc: 10–20%</div>
+      <span class="bn-tag tag-rd">↑ Elevada</span>
+    </div>
+    <div class="bn gr">
+      <div class="bn-ico">💪</div>
+      <div class="bn-lbl">Massa Magra</div>
+      <div class="bn-val">76,6 kg</div>
+      <div class="bn-sub">Musc. esq.: 43,7 kg<br>Base sólida para recomp.</div>
+      <span class="bn-tag tag-gr">✓ Acima da ref.</span>
+    </div>
+  </div>
+  <div class="bn-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="bn or">
+      <div class="bn-ico">🫀</div>
+      <div class="bn-lbl">Gordura Visceral</div>
+      <div class="bn-val">Nível 20</div>
+      <div class="bn-sub">Ref. segura: 1–9<br>Alto risco cardiometabólico</div>
+      <span class="bn-tag tag-rd">↑ Alto risco</span>
+    </div>
+    <div class="bn bl">
+      <div class="bn-ico">💧</div>
+      <div class="bn-lbl">Água Corporal</div>
+      <div class="bn-val">56,1 kg</div>
+      <div class="bn-sub">45,9% do peso total<br>Hidratação adequada</div>
+      <span class="bn-tag tag-bl">Normal</span>
+    </div>
+    <div class="bn or">
+      <div class="bn-ico">🔋</div>
+      <div class="bn-lbl">TMB</div>
+      <div class="bn-val">2.024 kcal</div>
+      <div class="bn-sub">Taxa metabólica basal<br>Gasto mínimo diário</div>
+      <span class="bn-tag tag-gy">Referência diária</span>
+    </div>
+    <div class="bn pu">
+      <div class="bn-ico">📐</div>
+      <div class="bn-lbl">Relação Cintura/Quadril</div>
+      <div class="bn-val">0,97</div>
+      <div class="bn-sub">Ref. masc: &lt; 0,90<br>Risco cardiovascular</div>
+      <span class="bn-tag tag-rd">↑ Acima do ideal</span>
+    </div>
+  </div>
+
+  <div class="sec">Composição Corporal Detalhada</div>
+  <div class="g23">
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Distribuição do Peso (122,1 kg)</span>
+      </div>
+      <!-- Body composition bar -->
+      <div class="bc-bar" style="height:36px;margin:6px 0 14px">
+        <div class="bc-seg" style="width:46%;background:#3b82f6">Água 56,1 kg</div>
+        <div class="bc-seg" style="width:12.4%;background:#22c55e;font-size:9px">Prot 15,1</div>
+        <div class="bc-seg" style="width:4.4%;background:#a3e635;font-size:9px;color:#333">Min 5,4</div>
+        <div class="bc-seg" style="width:37.3%;background:#f87171">Gord 45,5 kg</div>
+      </div>
+      <div class="h-grid" style="grid-template-columns:1fr 1fr;margin-bottom:0">
+        <div class="h-stat">
+          <div class="h-val" style="color:#3b82f6">56,1 kg</div>
+          <div class="h-lbl">Água Corporal</div>
+          <div class="h-ref">45,9% do total</div>
+        </div>
+        <div class="h-stat">
+          <div class="h-val" style="color:#22c55e">15,1 kg</div>
+          <div class="h-lbl">Proteína</div>
+          <div class="h-ref">12,4% do total</div>
+        </div>
+        <div class="h-stat">
+          <div class="h-val" style="color:#84cc16">5,4 kg</div>
+          <div class="h-lbl">Minerais</div>
+          <div class="h-ref">4,4% do total</div>
+        </div>
+        <div class="h-stat">
+          <div class="h-val" style="color:#dc2626">45,5 kg</div>
+          <div class="h-lbl">Gordu
