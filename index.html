@@ -1390,3 +1390,37 @@ function toggleTreinosMenu(e){
   var tab=document.getElementById('nav-treinos');
   var isOpen=dd.classList.contains('open');
   dd.classList.toggle('open',!isOpen);
+  tab.classList.toggle('open',!isOpen);
+}
+document.addEventListener('click',function(){
+  var dd=document.getElementById('treinos-dropdown');
+  var tab=document.getElementById('nav-treinos');
+  if(dd){dd.classList.remove('open');tab.classList.remove('open');}
+});
+function goToTreino(name){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
+  var el=document.getElementById('page-'+name);
+  if(el) el.classList.add('active');
+  var navTab=document.getElementById('nav-treinos');
+  if(navTab) navTab.classList.add('active');
+  document.getElementById('treinos-dropdown').classList.remove('open');
+  navTab.classList.remove('open');
+  window.scrollTo(0,0);
+}
+function openVideo(title,videoId){
+  document.getElementById('v-title').textContent=title;
+  document.getElementById('v-frame').src='https://www.youtube.com/embed/'+videoId+'?autoplay=1&rel=0&modestbranding=1';
+  document.getElementById('v-yt-link').href='https://www.youtube.com/watch?v='+videoId;
+  document.getElementById('video-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeVideo(){
+  document.getElementById('video-modal').classList.remove('open');
+  document.getElementById('v-frame').src='';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeVideo();});
+</script>
+</body>
+</html>
